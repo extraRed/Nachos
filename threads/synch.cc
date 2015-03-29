@@ -67,8 +67,9 @@ Semaphore::P()
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
     
     while (value == 0) { 			// semaphore not available
-	queue->Append((void *)currentThread);	// so go to sleep
-	currentThread->Sleep();
+        printf("%s go to sleep\n",currentThread->getName());
+        queue->Append((void *)currentThread);	// so go to sleep
+        currentThread->Sleep();
     } 
     value--; 					// semaphore available, 
 						// consume its value
@@ -143,9 +144,10 @@ void Condition::Wait(Lock* conditionLock)
 { 
     //ASSERT(FALSE); 
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
-    ASSERT(conditinLock->isHeldByCurrentThread());
+    ASSERT(conditionLock->isHeldByCurrentThread());
     conditionLock->Release();                                       //release the lock
     queue->Append((void*)currentThread);                    //append into the waiting queue
+    printf("%s go to sleep\n",currentThread->getName());
     currentThread->Sleep();                                         
     conditionLock->Acquire();                                       //when signaled, acquire the lock
     (void) interrupt->SetLevel(oldLevel);                       // re-enable interrupts
@@ -154,9 +156,10 @@ void Condition::Signal(Lock* conditionLock)
 {
     Thread* nextThread;
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
-    ASSERT(conditinLock->isHeldByCurrentThread());
+    ASSERT(conditionLock->isHeldByCurrentThread());
     if(!queue->IsEmpty()){
         nextThread=(Thread*)queue->Remove();
+        printf("%s wakes up\n",nextThread->getName());
         scheduler->ReadyToRun(nextThread);                  //signal a thread in the waiting queue to ready status
     }
     (void) interrupt->SetLevel(oldLevel);                       // re-enable interrupts
@@ -165,7 +168,7 @@ void Condition::Broadcast(Lock* conditionLock)
 {
     Thread* nextThread;
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
-    ASSERT(conditinLock->isHeldByCurrentThread());
+    ASSERT(conditionLock->isHeldByCurrentThread());
     while(!queue->IsEmpty()){
         nextThread=(Thread*)queue->Remove();
         scheduler->ReadyToRun(nextThread);                  //signal all threads in the waiting queue to ready status
