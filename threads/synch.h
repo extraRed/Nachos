@@ -139,4 +139,35 @@ class Condition {
     List* queue;
     // plus some other stuff you'll need to define
 };
+
+//by LMX
+ class Barrier{
+   public:
+        Barrier(char* debugName, int n);
+        ~Barrier();
+        char* getName() { return (name); }
+        void Wait();
+    private:
+        Condition* barrier_cv;
+        Lock* barrier_lock;
+        char* name;
+        int brokensize;     //the barrier will break when the arrived threads reach this number 
+        int arrived;
+};
+
+ class Read_Write_Lock{
+    public:
+        Read_Write_Lock(char* debugName);
+        ~Read_Write_Lock();
+        char* getName() { return (name); }
+        void Read_Acquire();
+        void Write_Acquire();
+        void Read_Release();
+        void Write_Release();
+    private:
+        Lock* mutex;
+        Lock* writing;
+        char* name;
+        int reader;
+ };
 #endif // SYNCH_H

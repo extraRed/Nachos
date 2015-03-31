@@ -112,14 +112,16 @@ Lock::~Lock()
 {
     delete lock;
 }
-void Lock::Acquire() 
+void 
+Lock::Acquire() 
 {
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
     lock->P();
     owner=currentThread;
     (void) interrupt->SetLevel(oldLevel);                       // re-enable interrupts
 }
-void Lock::Release() 
+void 
+Lock::Release() 
 {
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
     ASSERT(isHeldByCurrentThread());                           // the lock must be held by the current thread
@@ -127,10 +129,13 @@ void Lock::Release()
     owner=NULL;
     (void) interrupt->SetLevel(oldLevel);                       // re-enable interrupts
 }
-bool Lock::isHeldByCurrentThread()
+bool 
+Lock::isHeldByCurrentThread()
 {
     return this->owner==currentThread;
 }
+
+
 Condition::Condition(char* debugName) 
 {
     name=debugName;
@@ -140,7 +145,8 @@ Condition::~Condition()
 {
     delete queue;
 }
-void Condition::Wait(Lock* conditionLock) 
+void 
+Condition::Wait(Lock* conditionLock) 
 { 
     //ASSERT(FALSE); 
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
@@ -152,7 +158,8 @@ void Condition::Wait(Lock* conditionLock)
     conditionLock->Acquire();                                       //when signaled, acquire the lock
     (void) interrupt->SetLevel(oldLevel);                       // re-enable interrupts
 }
-void Condition::Signal(Lock* conditionLock) 
+void 
+Condition::Signal(Lock* conditionLock) 
 {
     Thread* nextThread;
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
@@ -164,7 +171,8 @@ void Condition::Signal(Lock* conditionLock)
     }
     (void) interrupt->SetLevel(oldLevel);                       // re-enable interrupts
 }
-void Condition::Broadcast(Lock* conditionLock) 
+void 
+Condition::Broadcast(Lock* conditionLock) 
 {
     Thread* nextThread;
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
@@ -174,4 +182,76 @@ void Condition::Broadcast(Lock* conditionLock)
         scheduler->ReadyToRun(nextThread);                  //signal all threads in the waiting queue to ready status
     }
     (void) interrupt->SetLevel(oldLevel);                       // re-enable interrupts
+}
+
+Barrier::Barrier(char * debugName, int n)
+{
+    name=debugName;
+    brokensize=n;
+    barrier_cv=new Condition(name);
+    barrier_lock=new Lock(name);
+}
+Barrier::~ Barrier()
+{
+    delete barrier_cv;
+    delete barrier_lock;
+}
+void
+Barrier::Wait()
+{
+    barrier_lock->Acquire();
+    arrived++;
+    if(arrived==brokensize){
+        barrier_cv->Broadcast(barrier_lock);
+        arrived=0;
+    }
+    else{
+        barrier_cv->Wait(barrier_lock);
+    }
+    barrier_lock->Release();
+}
+
+Read_Write_Lock::Read_Write_Lock(char* debugName)
+{
+    name=debugName;
+    mutex=new Lock("mutex");
+    writing=new Lock(name);
+    reader=0;
+}
+Read_Write_Lock::~Read_Write_Lock()
+{
+    delete mutex;
+    delete writing;
+}
+void
+Read_Write_Lock::Read_Acquire()
+{
+    mutex->Acquire();
+    reader++;
+    printf("%d readers now\n",reader);
+    if(reader==1){
+        writing->Acquire();
+    }
+    mutex->Release();
+}
+void
+Read_Write_Lock::Read_Release()
+{
+    mutex->Acquire();
+    reader--;
+    printf("%d readers now\n",reader);
+    if(reader==0){
+        writing->Release();
+    }
+    mutex->Release();
+}
+void
+Read_Write_Lock::Write_Acquire()
+{
+    writing->Acquire();
+}
+void
+Read_Write_Lock::Write_Release()
+{
+    writing->Release();
 }

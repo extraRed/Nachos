@@ -159,10 +159,10 @@ void consumerSem(int arg)
 
 void ThreadTestSem()
 {
-    Thread *producer1 = new Thread("Producer1");
-    Thread *consumer1 = new Thread("Consumer1");
-    Thread *producer2 = new Thread("Producer2");
-    Thread *consumer2 = new Thread("Consumer2");
+    Thread *producer1=new Thread("Producer1");
+    Thread *consumer1=new Thread("Consumer1");
+    Thread *producer2=new Thread("Producer2");
+    Thread *consumer2=new Thread("Consumer2");
     producer1->Fork(producerSem,6);
     consumer1->Fork(consumerSem,8);
     consumer2->Fork(consumerSem,3);
@@ -178,7 +178,7 @@ void producerCond(int arg)
 {
     while(arg--) {
         pro_con->Acquire();
-        while(filled_slot == buffersize) {                //buffer is full
+        while(filled_slot==buffersize) {                //buffer is full
             printf("Buffer is full!\n");
             isEmpty->Wait(pro_con);
         }
@@ -194,7 +194,7 @@ void consumerCond(int arg)
 {
     while(arg--) {
         pro_con->Acquire();
-        while(filled_slot== 0) {                           //buffer is empty
+        while(filled_slot==0) {                           //buffer is empty
             printf("Buffer is empty!\n");
             isFull->Wait(pro_con);
         }
@@ -208,16 +208,65 @@ void consumerCond(int arg)
 }
 void ThreadTestCond()
 {
-    Thread *producer1 = new Thread("Producer1");
-    Thread *consumer1 = new Thread("Consumer1");
-    Thread *producer2 = new Thread("Producer2");
-    Thread *consumer2 = new Thread("Consumer2");
+    Thread *producer1=new Thread("Producer1");
+    Thread *consumer1=new Thread("Consumer1");
+    Thread *producer2=new Thread("Producer2");
+    Thread *consumer2=new Thread("Consumer2");
     producer1->Fork(producerCond,6);
     consumer1->Fork(consumerCond,8);
     consumer2->Fork(consumerCond,3);
     producer2->Fork(producerCond,6);
 }
 
+
+Barrier* barrier=new Barrier("barrier",3);
+void hitBarrier(int arg)
+{
+    printf("%s arrives at the barrier\n",currentThread->getName());
+    barrier->Wait();
+    printf("%s goes through the barrier\n",currentThread->getName());
+}
+void ThreadTestBarrier()
+{
+    Thread *t1=new Thread("Thread1");
+    Thread *t2=new Thread("Thread2");
+    Thread *t3=new Thread("Thread3");
+    t1->Fork(hitBarrier,0);
+    t2->Fork(hitBarrier,0);
+    t3->Fork(hitBarrier,0);
+}
+
+Read_Write_Lock* RWLock=new Read_Write_Lock("rwlock");
+void ThreadRead(int arg)
+{
+    RWLock->Read_Acquire();
+    printf("%s is doing some reading...\n",currentThread->getName());
+    currentThread->Yield();
+    RWLock->Read_Release();
+}
+void ThreadWrite(int arg)
+{
+    RWLock->Write_Acquire();
+    printf("%s is doing some writing...\n",currentThread->getName());
+    currentThread->Yield();
+    RWLock->Write_Release();
+}
+
+void ThreadTestRWLock()
+{
+    Thread *r1=new Thread("Reader1");
+    Thread *r2=new Thread("Reader2");
+    Thread *r3=new Thread("Reader3");
+    Thread *r4=new Thread("Reader4");
+    Thread *w1=new Thread("Writer1");
+    Thread *w2=new Thread("Writer2");
+    r1->Fork(ThreadRead,0);
+    r2->Fork(ThreadRead,0);
+    r3->Fork(ThreadRead,0);
+    r4->Fork(ThreadRead,0);
+    w1->Fork(ThreadWrite,0);
+    w2->Fork(ThreadWrite,0);
+}
 //----------------------------------------------------------------------
 // ThreadTest
 // 	Invoke a test routine.
@@ -238,7 +287,9 @@ ThreadTest()
         break;
     case 4:
         //ThreadTestSem();
-        ThreadTestCond();
+        //ThreadTestCond();
+        //ThreadTestBarrier();
+        ThreadTestRWLock();
         break;
     default:
 	printf("No test specified.\n");
