@@ -39,6 +39,9 @@ extern int TIDs[MaxThreads];                //the array to allocate TID
 #ifdef USER_PROGRAM
 #include "machine.h"
 extern Machine* machine;	// user program memory and registers
+//by LMX
+#include "pageManager.h"
+extern PageManager* pageManager;
 #endif
 
 #ifdef FILESYS_NEEDED 		// FILESYS or FILESYS_STUB 

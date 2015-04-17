@@ -144,6 +144,8 @@ class Thread {
   public:
     void SaveUserState();		// save user-level register state
     void RestoreUserState();		// restore user-level register state
+    //by LMX
+    void InitUserReg();
 
     AddrSpace *space;			// User code this thread is running.
 #endif

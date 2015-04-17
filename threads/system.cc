@@ -32,6 +32,8 @@ SynchDisk   *synchDisk;
 
 #ifdef USER_PROGRAM	// requires either FILESYS or FILESYS_STUB
 Machine *machine;	// user program memory and registers
+//by LMX
+PageManager* pageManager;        //for memory management
 #endif
 
 #ifdef NETWORK
@@ -159,6 +161,8 @@ Initialize(int argc, char **argv)
     
 #ifdef USER_PROGRAM
     machine = new Machine(debugUserProg);	// this must come first
+    //by LMX
+    pageManager = new PageManager();
 #endif
 
 #ifdef FILESYS

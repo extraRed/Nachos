@@ -21,7 +21,7 @@ Statistics::Statistics()
     totalTicks = idleTicks = systemTicks = userTicks = 0;
     numDiskReads = numDiskWrites = 0;
     numConsoleCharsRead = numConsoleCharsWritten = 0;
-    numPageFaults = numPacketsSent = numPacketsRecvd = 0;
+    numPageFaults = numTLBMisses = numPacketsSent = numPacketsRecvd = 0;
 }
 
 //----------------------------------------------------------------------
@@ -38,7 +38,7 @@ Statistics::Print()
     printf("Disk I/O: reads %d, writes %d\n", numDiskReads, numDiskWrites);
     printf("Console I/O: reads %d, writes %d\n", numConsoleCharsRead, 
 	numConsoleCharsWritten);
-    printf("Paging: faults %d\n", numPageFaults);
+    printf("Paging: faults %d, TLB misses %d\n", numPageFaults, numTLBMisses);
     printf("Network I/O: packets received %d, sent %d\n", numPacketsRecvd, 
 	numPacketsSent);
 }

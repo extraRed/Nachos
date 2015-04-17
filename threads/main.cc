@@ -100,7 +100,7 @@ main(int argc, char **argv)
         if(argv[0][2] == 'S')
             testnum = 3;
         break;
-        case 'S':               //Test synch
+      case 'S':               //Test synch
         if(argv[0][2]=='Y' && argv[0][3]=='N')
             testnum=4;
         break;

@@ -96,7 +96,7 @@ BitMap::Find()
 {
     for (int i = 0; i < numBits; i++)
 	if (!Test(i)) {
-	    Mark(i);
+	    //Mark(i);
 	    return i;
 	}
     return -1;

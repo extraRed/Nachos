@@ -124,7 +124,7 @@ void
 Lock::Release() 
 {
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
-    ASSERT(isHeldByCurrentThread());                           // the lock must be held by the current thread
+    //ASSERT(isHeldByCurrentThread());                           // the lock must be held by the current thread
     lock->V();
     owner=NULL;
     (void) interrupt->SetLevel(oldLevel);                       // re-enable interrupts
@@ -228,7 +228,7 @@ Read_Write_Lock::Read_Acquire()
 {
     mutex->Acquire();
     reader++;
-    printf("%d readers now\n",reader);
+    printf("%s arrived, %d readers now\n",currentThread->getName(),reader);
     if(reader==1){
         writing->Acquire();
     }
@@ -239,7 +239,7 @@ Read_Write_Lock::Read_Release()
 {
     mutex->Acquire();
     reader--;
-    printf("%d readers now\n",reader);
+    printf("%s left, %d readers now\n",currentThread->getName(),reader);
     if(reader==0){
         writing->Release();
     }
@@ -248,10 +248,12 @@ Read_Write_Lock::Read_Release()
 void
 Read_Write_Lock::Write_Acquire()
 {
+    printf("%s arrived\n",currentThread->getName());
     writing->Acquire();
 }
 void
 Read_Write_Lock::Write_Release()
 {
+    printf("%s left\n",currentThread->getName());
     writing->Release();
 }

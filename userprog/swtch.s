@@ -40,4 +40,4 @@ SWITCH:
         movl 32(%eax),%eax # restore return address into eax
         movl %eax,4(%esp) # copy over the ret address on the stack
         movl _eax_save,%eax
-        ret
+        ret #pop the esp, so the movl %eax,4(%esp) is useless

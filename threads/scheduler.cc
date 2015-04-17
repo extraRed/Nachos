@@ -159,6 +159,7 @@ Scheduler::Run (Thread *nextThread)
     
 #ifdef USER_PROGRAM
     if (currentThread->space != NULL) {		// if there is an address space
+    printf("change pagetable\n");
         currentThread->RestoreUserState();     // to restore, do it.
 	currentThread->space->RestoreState();
     }

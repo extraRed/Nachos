@@ -49,35 +49,21 @@ SimpleThread(int which)
 // 	Set up a ping-pong between two threads, by forking a thread 
 //	to call SimpleThread, and then calling SimpleThread ourselves.
 //----------------------------------------------------------------------
-
+void T(int arg)
+{
+    for(int i=0;i<20;i++){
+        printf("%s\n",currentThread->getName());
+        interrupt->OneTick();
+        }
+}
 void
 ThreadTest1()
 {
     DEBUG('t', "Entering ThreadTest1");
-    /*for(int i=1;i<5;i++){
-        Thread *t=new Thread("forked");
-        t->Fork(SimpleThread,t->getTID());
-    }*/
-    
-    Thread *t1 = new Thread("forked1");
-    Thread *t2 = new Thread("forked2"); 
-    Thread *t3 = new Thread("forked3");   
-   // Thread *t4 = new Thread("forked4");   
-    //Thread *t5 = new Thread("forked5");   
-
-    //t1->setPriority(5);
-    //t2->setPriority(4);
-    //t3->setPriority(3);
-    
-    t1->Fork(SimpleThread, t1->getTID());
-    t2->Fork(SimpleThread, t2->getTID());
-    t3->Fork(SimpleThread, t3->getTID());
-    //t4->Fork(SimpleThread, t4->getTID());
-    //t5->Fork(SimpleThread, t5->getTID());
-    
-    //scheduler->Print();
-    //printf("\n");
-    //SimpleThread(0);
+   Thread *t1=new Thread("Batman");
+   t1->Fork(T,0);
+   Thread *t2=new Thread("Superman");
+   t2->Fork(T,0);
     
 }
 
@@ -260,12 +246,12 @@ void ThreadTestRWLock()
     Thread *r4=new Thread("Reader4");
     Thread *w1=new Thread("Writer1");
     Thread *w2=new Thread("Writer2");
+    w1->Fork(ThreadWrite,0);
     r1->Fork(ThreadRead,0);
     r2->Fork(ThreadRead,0);
     r3->Fork(ThreadRead,0);
-    r4->Fork(ThreadRead,0);
-    w1->Fork(ThreadWrite,0);
     w2->Fork(ThreadWrite,0);
+    r4->Fork(ThreadRead,0);
 }
 //----------------------------------------------------------------------
 // ThreadTest

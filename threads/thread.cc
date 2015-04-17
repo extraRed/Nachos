@@ -125,10 +125,6 @@ Thread::Fork(VoidFunctionPtr func, int arg)
     (void) interrupt->SetLevel(oldLevel);
 
     //by LMX
-    //if(strcmp(this->getName(),"forked temp")==0){
-    //    scheduler->Print();
-    //    printf("\n");
-    //}
     if(this->getPriority()<currentThread->getPriority())
         currentThread->Yield();
 }    
@@ -363,6 +359,16 @@ Thread::RestoreUserState()
 {
     for (int i = 0; i < NumTotalRegs; i++)
 	machine->WriteRegister(i, userRegisters[i]);
+}
+
+void
+Thread::InitUserReg()
+{
+    for(int i = 0; i <NumTotalRegs; i++)
+        userRegisters[i] = 0;
+    userRegisters[PCReg] = 0;
+    userRegisters[NextPCReg] = 4;
+    userRegisters[StackReg] = space->getStackReg();
 }
 #endif
 

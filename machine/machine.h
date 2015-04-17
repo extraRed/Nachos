@@ -39,6 +39,7 @@
 enum ExceptionType { NoException,           // Everything ok!
 		     SyscallException,      // A program executed a system call.
 		     PageFaultException,    // No valid translation found
+		     TLBMissException,      //TLB miss
 		     ReadOnlyException,     // Write attempted to page marked 
 					    // "read-only"
 		     BusErrorException,     // Translation resulted in an 
@@ -145,6 +146,9 @@ class Machine {
 
     void Debugger();		// invoke the user program debugger
     void DumpState();		// print the user CPU and memory state 
+
+    void TLBSwapFIFO(int address);
+    void TLBSwapLRU(int address);
 
 
 // Data structures -- all of these are accessible to Nachos kernel code.

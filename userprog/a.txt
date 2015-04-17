@@ -1,0 +1,1332 @@
+vpn:0 goes to ppn:0 allocated
+vpn:1 goes to ppn:1 allocated
+vpn:2 goes to ppn:2 allocated
+vpn:3 goes to ppn:3 allocated
+vpn:4 goes to ppn:4 allocated
+vpn:5 goes to ppn:5 allocated
+vpn:6 goes to ppn:6 allocated
+vpn:7 goes to ppn:7 allocated
+vpn:8 goes to ppn:8 allocated
+vpn:9 goes to ppn:9 allocated
+vpn:10 goes to ppn:10 allocated
+vpn:11 goes to ppn:11 allocated
+vpn:12 goes to ppn:12 allocated
+vpn:13 goes to ppn:13 allocated
+18 physical pages left
+vpn:0 goes to ppn:14 allocated
+vpn:1 goes to ppn:15 allocated
+vpn:2 goes to ppn:16 allocated
+vpn:3 goes to ppn:17 allocated
+vpn:4 goes to ppn:18 allocated
+vpn:5 goes to ppn:19 allocated
+vpn:6 goes to ppn:20 allocated
+vpn:7 goes to ppn:21 allocated
+vpn:8 goes to ppn:22 allocated
+vpn:9 goes to ppn:23 allocated
+vpn:10 goes to ppn:24 allocated
+vpn:11 goes to ppn:25 allocated
+vpn:12 goes to ppn:26 allocated
+vpn:13 goes to ppn:27 allocated
+4 physical pages left
+main enter translating! vpn:0, ppn:0
+main enter translating! vpn:0, ppn:0
+main enter translating! vpn:0, ppn:0
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+current thread yields
+Enter Thread2
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:1, ppn:15
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+current thread yields
+change pagetable
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+current thread yields
+change pagetable
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+current thread yields
+change pagetable
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:1, ppn:1
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+current thread yields
+change pagetable
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+current thread yields
+change pagetable
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+current thread yields
+change pagetable
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+current thread yields
+change pagetable
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+current thread yields
+change pagetable
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+current thread yields
+change pagetable
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:4, ppn:4
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:3, ppn:3
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:13, ppn:13
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:2, ppn:2
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:5, ppn:5
+main enter translating! vpn:0, ppn:0
+main enter translating! vpn:0, ppn:0
+main enter translating! vpn:0, ppn:0
+change pagetable
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:4, ppn:18
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:3, ppn:17
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:13, ppn:27
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:2, ppn:16
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:5, ppn:19
+New Thread enter translating! vpn:0, ppn:14
+New Thread enter translating! vpn:0, ppn:14
+New Thread enter translating! vpn:0, ppn:14
+No threads ready or runnable, and no pending interrupts.
+Assuming the program completed.
+Machine halting!
+
+Ticks: total 1101, idle 12, system 130, user 959
+Disk I/O: reads 0, writes 0
+Console I/O: reads 0, writes 0
+Paging: faults 0, TLB misses 66
+Network I/O: packets received 0, sent 0
+
+Cleaning up...
