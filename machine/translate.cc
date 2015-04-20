@@ -96,8 +96,9 @@ Machine::ReadMem(int addr, int size, int *value)
     exception = Translate(addr, &physicalAddress, size, FALSE);
     if (exception != NoException) {
 	machine->RaiseException(exception, addr);
-      if (exception == TLBMissException){
+      if (exception == TLBMissException || PageFaultException){
         exception = Translate(addr, &physicalAddress, size, FALSE);
+        ASSERT(exception == NoException);
         if (exception != NoException){
             return FALSE;
         }
@@ -152,8 +153,9 @@ Machine::WriteMem(int addr, int size, int value)
     exception = Translate(addr, &physicalAddress, size, TRUE);
     if (exception != NoException) {
 	machine->RaiseException(exception, addr);
-      if (exception == TLBMissException){
-        exception = Translate(addr, &physicalAddress, size, FALSE);
+      if (exception == TLBMissException || PageFaultException){
+        exception = Translate(addr, &physicalAddress, size, TRUE);
+        ASSERT(exception == NoException);
         if (exception != NoException){
             return FALSE;
         }
@@ -200,8 +202,7 @@ Machine::WriteMem(int addr, int size, int value)
 ExceptionType
 Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
 {
-    printf("%s enter translating! ",currentThread->getName());
-    
+    //printf("%s enter translating!",currentThread->getName());
     int i;
     unsigned int vpn, offset;
     TranslationEntry *entry;
@@ -224,9 +225,7 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
     vpn = (unsigned) virtAddr / PageSize;
     offset = (unsigned) virtAddr % PageSize;
 
-    //printf("virtual page number to translate:%d,...",vpn);
-    pageTable[vpn].lastAccessTime = stats->totalTicks;     //Update the access time
-    printf("vpn:%d, ppn:%d\n",vpn,pageTable[vpn].physicalPage);
+    //printf("Translating virtual page:%d , ppn is %d, entry is %d\n",vpn,pageTable[vpn].virtualPage,pageTable[vpn].valid);
     if (tlb == NULL) {		// => page table => vpn is index into table
 	if (vpn >= pageTableSize) {
 	    DEBUG('a', "virtual page # %d too large for page table size %d!\n", 
@@ -238,11 +237,13 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
 	    return PageFaultException;
 	}
 	entry = &pageTable[vpn];
+       entry->lastAccessTime = stats->totalTicks;  //update access time
     } else {                       //We have a TLB here!
         for (entry = NULL, i = 0; i < TLBSize; i++)
     	    if (tlb[i].valid && (tlb[i].virtualPage == vpn)) {
 		entry = &tlb[i];			// FOUND!
-		entry->lastAccessTime = stats->totalTicks;  //update access time
+		entry->lastAccessTime = stats->totalTicks;  
+		pageTable[vpn].lastAccessTime = stats->totalTicks;     //Update the access time
 		//printf("TLB hit!\n");
 		break;
 	    }
@@ -273,17 +274,21 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
     *physAddr = pageFrame * PageSize + offset;
     ASSERT((*physAddr >= 0) && ((*physAddr + size) <= MemorySize));
     DEBUG('a', "phys addr = 0x%x\n", *physAddr);
+
+    if(tlb!=NULL){
+        pageTable[vpn].dirty=entry->dirty;
+        pageTable[vpn].use=entry->use;
+    }
     return NoException;
 }
 
-int TLBhead=0;  //only for FIFO
 void
 Machine::TLBSwapFIFO(int address)
 {
     DEBUG('a',"TLB MISS, use FIFO swap\n");
     int vpn = address / PageSize;	
-    int slot=TLBhead;
-    TLBhead=(TLBhead+1)%TLBSize;
+    int slot=0;
+    int min=tlb[0].comingTime;
     TranslationEntry *entry = NULL;		
     for(int i = 0; i< TLBSize;i++){     
         if(tlb[i].valid == FALSE){      //Found an empty TLB entry
@@ -291,6 +296,10 @@ Machine::TLBSwapFIFO(int address)
            DEBUG('a',"Slot %d is empty.\n",slot);
 	    break;
 	}		
+       if(tlb[i].comingTime < min){
+	   min = tlb[i].comingTime;
+	   slot = i;
+	 } 
     }
     entry = &tlb[slot];
     //printf("put the miss entry in slot %d\n",slot);
@@ -300,9 +309,16 @@ Machine::TLBSwapFIFO(int address)
         //printf("Swap %d to page table\n",slot);
     }
     */
+    if(pageTable[vpn].valid ==FALSE){
+        machine->RaiseException(PageFaultException, address);
+    }
     *entry = pageTable[vpn];
     ASSERT(entry->valid==TRUE);
-    
+    for(int i = 0; i< TLBSize;i++){     
+        if(tlb[i].valid ==TRUE && pageTable[tlb[i].virtualPage].valid==FALSE){    
+            tlb[i].valid=FALSE;
+        }
+    }
 }
 
 void
@@ -339,8 +355,19 @@ Machine::TLBSwapLRU(int address){
         //printf("Swap %d to page table\n",slot);
     }
     */
+    if(pageTable[vpn].valid ==FALSE){
+        machine->RaiseException(PageFaultException, address);
+    }
     *entry = pageTable[vpn];
     ASSERT(entry->valid==TRUE);
-    entry->lastAccessTime = stats->totalTicks;     //Update the access time
-
+    for(int i = 0; i< TLBSize;i++){     
+        if(tlb[i].valid ==TRUE && pageTable[tlb[i].virtualPage].valid==FALSE){    
+            tlb[i].valid=FALSE;
+        }
+    }
+    /*
+    printf("TLB\n");
+    for(int i = 0; i< TLBSize;i++){     
+        printf("valid:%d, vpn:%d, ppn:%d, dirty:%d, time:%d\n",tlb[i].valid,tlb[i].virtualPage,tlb[i].physicalPage,tlb[i].dirty,tlb[i].lastAccessTime);
+    }*/
 }

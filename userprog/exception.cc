@@ -55,16 +55,24 @@ ExceptionHandler(ExceptionType which)
 
     if ((which == SyscallException) && (type == SC_Halt)) {
 	DEBUG('a', "Shutdown, initiated by user program.\n");
-       printf("User program called halt!\n");
    	interrupt->Halt();
     }else if((which == SyscallException) && (type == SC_Exit)){
+        int exitCode = machine->ReadRegister(4);
+        printf("Thread %s exit with code %d\n",currentThread->getName(),exitCode);
         currentThread->Finish();
+    }else if((which == SyscallException) && (type == SC_Print)){
+        int arg = machine->ReadRegister(4);
+        printf("number: %d\n",arg);
     }else if(which ==TLBMissException){
         (stats->numTLBMisses) ++;
         int address=machine->registers[BadVAddrReg];
         //machine->TLBSwapFIFO(address);
         machine->TLBSwapLRU(address);
         DEBUG('a',"%x missed in TLB.\n",address);
+    }else if(which==PageFaultException){
+        (stats->numPageFaults) ++;
+        int address=machine->registers[BadVAddrReg];
+        pageManager->loadPage(address);
     }else {
 	printf("Unexpected user mode exception %d %d\n", which, type);
        ASSERT(FALSE);

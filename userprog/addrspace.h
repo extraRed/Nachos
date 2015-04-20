@@ -30,15 +30,23 @@ class AddrSpace {
 
     void SaveState();			// Save/restore address space-specific
     void RestoreState();		// info on a context switch 
-
+    //by LMX
     int AddrTrans(int address);     //from physical address to virtual address 
     int getStackReg();
-
+    int getPageNum(){return numPages;}
+    int getAvailPageNum(){return availNumPages;}
+    int setAvailPageNum(int pages){ availNumPages=pages;}
+    char *getFileName(){return filename;}
+    void setFileName(char *f){filename=f;}
+    void CreateTempFile(OpenFile *executable, char *tempfile, int filesize);
   private:
     TranslationEntry *pageTable;	// Assume linear page table translation
 					// for now!
     unsigned int numPages;		// Number of pages in the virtual 
 					// address space
+    //by LMX
+    char *filename;         //the file that store the whole content of a executable
+    unsigned int availNumPages;
 };
 
 #endif // ADDRSPACE_H

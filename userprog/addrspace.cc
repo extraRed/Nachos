@@ -77,11 +77,13 @@ AddrSpace::AddrSpace(OpenFile *executable)
 						// to leave room for the stack
     numPages = divRoundUp(size, PageSize);
     size = numPages * PageSize;
-    ASSERT(numPages <= NumPhysPages);		// check we're not trying
+    //ASSERT(numPages <= NumPhysPages);		// check we're not trying
 						// to run anything too big --
 						// at least until we have
 						// virtual memory
-
+						
+    //We use fixed allocation strategy, now each thread can have up to 8 physical pages
+    availNumPages = NumPhysPages/4;
     DEBUG('a', "Initializing address space, num pages %d, size %d\n", 
 					numPages, size);
 // first, set up the translation 
@@ -89,30 +91,37 @@ AddrSpace::AddrSpace(OpenFile *executable)
     for (i = 0; i < numPages; i++) {
 	pageTable[i].virtualPage = i;	// for now, virtual page # = phys page #
 	//pageTable[i].physicalPage = i;
+	pageTable[i].physicalPage = -1;
 	//by LMX
+	/*
 	int phynum = pageManager->findPage();
        ASSERT(phynum>=0 && phynum<NumPhysPages);
        pageManager->markPage(phynum);
 	pageTable[i].physicalPage = phynum;
        printf("vpn:%d goes to ppn:%d allocated\n",i,phynum);
-	pageTable[i].valid = TRUE;
-	pageTable[i].use = FALSE;
+       */
+       
+       //We use lazy-loading now!,so no page is valid!
+	//pageTable[i].valid = TRUE;
+       pageTable[i].valid = FALSE;
+       pageTable[i].use = FALSE;
 	pageTable[i].dirty = FALSE;
 	pageTable[i].readOnly = FALSE;  // if the code segment was entirely on 
 					// a separate page, we could set its 
 					// pages to be read-only
     }
-    printf("%d physical pages left\n",pageManager->numClean());
+    //printf("%d physical pages left\n",pageManager->numClean());
     
 // zero out the entire address space, to zero the unitialized data segment 
 // and the stack segment
     //bzero(machine->mainMemory, size);
-    
+    /*
     for(i=0; i<numPages; i++){
 		bzero( &(machine->mainMemory[pageTable[i].physicalPage * PageSize]), PageSize );
     }
+    */
 // then, copy in the code and data segments into memory
-/*
+    /*
     if (noffH.code.size > 0) {
         DEBUG('a', "Initializing code segment, at 0x%x, size %d\n", 
 			noffH.code.virtualAddr, noffH.code.size);
@@ -127,6 +136,7 @@ AddrSpace::AddrSpace(OpenFile *executable)
     }
     */
     //by LMX
+    /*
     int vpos;
 
     if (noffH.code.size > 0) {
@@ -145,7 +155,7 @@ AddrSpace::AddrSpace(OpenFile *executable)
             vpos++;
         }
     }
-
+    */
 }
 
 //----------------------------------------------------------------------
@@ -157,7 +167,8 @@ AddrSpace::~AddrSpace()
 {
    //by LMX
    for(int i = 0;i < numPages;i++)
-        pageManager->cleanPage(i);
+        if(pageTable[i].valid==TRUE)
+            pageManager->cleanPage(pageTable[i].physicalPage);
    delete pageTable;
 }
 
@@ -203,8 +214,8 @@ AddrSpace::InitRegisters()
 
 void AddrSpace::SaveState() 
 {
-    //pageTable = machine->pageTable;
-    //numPages = machine->pageTableSize;
+    pageTable = machine->pageTable;
+    numPages = machine->pageTableSize;
 }
 
 //----------------------------------------------------------------------
@@ -232,4 +243,30 @@ int AddrSpace::AddrTrans ( int virtAddr)
 int AddrSpace::getStackReg()
 {
     return machine->registers[StackReg];
+}
+
+//Write the Executable file into a file, so we can load them when we meet a pagefault
+char Buffer[0x10000];  //create a large buffer
+
+void AddrSpace::CreateTempFile(OpenFile *executable, char *tempfile, int filesize)
+{
+    NoffHeader noffH;
+    executable -> ReadAt((char *)&noffH, sizeof(noffH), 0);
+    if ((noffH.noffMagic != NOFFMAGIC) && (WordToHost(noffH.noffMagic) == NOFFMAGIC))
+    	SwapHeader(&noffH);
+    ASSERT(noffH.noffMagic == NOFFMAGIC);
+    //read the original executable file to the buffer
+    memset(Buffer, 0, sizeof(Buffer));
+    if (noffH.code.size > 0) {
+        executable -> ReadAt(Buffer, noffH.code.size, noffH.code.inFileAddr);
+    }
+    if (noffH.initData.size > 0) {
+        executable -> ReadAt(Buffer + noffH.code.size, noffH.initData.size, noffH.initData.inFileAddr);
+    }
+    //create a new file    
+    fileSystem -> Create(tempfile, filesize);    
+    //write the data to the new file
+    OpenFile *tempexe = fileSystem -> Open(tempfile);
+    tempexe -> WriteAt(Buffer, filesize, 0);
+    delete tempexe;  
 }

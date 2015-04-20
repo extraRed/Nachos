@@ -19,11 +19,15 @@ class PageManager
             
             void cleanPage(int address); // Clean the page start from specific address 
 
-            //bool loadPage();             // load page for the current thread
+            void loadPage(int address);             // load page for the current thread
    
-            //int unloadPage();            // unload page for the current thread 
+            int swapPage();            // unload page for the current thread 
 
-            //int SwapAlgorithm();         // swap a page from the memory to the disk
+            int getSwapPageFIFO();         // swap a page from the memory to the disk
+            
+            int getSwapPageLRU();         // swap a page from the memory to the disk
+
+            void DumpState();   
 
      private:
             BitMap *manager;

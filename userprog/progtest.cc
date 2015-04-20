@@ -16,10 +16,11 @@
 
 void DoNothing(int which)
 {
-    printf("Enter Thread2\n");
+    printf("Enter New Thread\n");
     currentThread->space->RestoreState();
     machine->Run();
 }
+
 
 //----------------------------------------------------------------------
 // StartProcess
@@ -38,27 +39,50 @@ StartProcess(char *filename)
 	return;
     }
     space = new AddrSpace(executable);    
-    currentThread->space = space;
 
+    char *tempfile=new char[50];
+    char *tid=new char[10];
+    sprintf(tid,"%d",currentThread->getTID());
+    int filesize = (space ->getPageNum()) * PageSize ;
+    strcpy(tempfile,filename);
+    strcat(tempfile,tid);
+    //printf("name:%s\n",tempfile);
+    space->CreateTempFile(executable, tempfile, filesize);
+
+    currentThread->space = space;
+    currentThread->space->setFileName(tempfile);
+  
     delete executable;			// close file
 
     space->InitRegisters();		// set the initial register values
     space->RestoreState();		// load page table register
-
-    OpenFile *executable2 = fileSystem->Open("../test/sort");
+    /*
+    OpenFile *executable2 = fileSystem->Open("../test/matmult");
     AddrSpace *space2;
 
     if (executable2 == NULL) {
-	printf("Unable to open file halt\n");
+	printf("Unable to open file\n");
 	return;
     }
-    space2 = new AddrSpace(executable2);    
+    space2 = new AddrSpace(executable2);  
     Thread *thread = new Thread("New Thread");
-    thread->Fork(DoNothing, 0);
-    thread->space = space2;
-    thread->InitUserReg();
-    delete executable2;			// close file
+
+    char *tempfile2=new char[50];
+    char *tid2=new char[10];
+    sprintf(tid2,"%d",thread->getTID());
+    int filesize2 = (space2->getPageNum()) * PageSize ;
+    strcpy(tempfile2,"../test/matmult");
+    strcat(tempfile2,tid2);
+    //printf("name:%s\n",tempfile);
+    space2->CreateTempFile(executable2, tempfile2, filesize2);
+    space->InitRegisters();
     
+    thread->space = space2;
+    thread->space->setFileName(tempfile2);
+    thread->InitUserReg();
+    thread->Fork(DoNothing, 0);
+    delete executable2;			// close file
+    */
     machine->Run();			// jump to the user progam
     ASSERT(FALSE);			// machine->Run never returns;
 					// the address space exits

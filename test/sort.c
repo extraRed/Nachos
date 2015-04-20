@@ -8,25 +8,31 @@
  */
 
 #include "syscall.h"
-#define N 4 
+#define N 1024
 int A[N];	/* size of physical memory; with code, we'll run out of space!*/
 
 int
 main()
 {
-    int i, j, tmp;
+    int i, j, k,tmp;
 
     /* first initialize the array, in reverse sorted order */
     for (i = 0; i < N; i++)		
         A[i] = N - i;
 
     /* then sort! */
-    for (i = 0; i < N - 1; i++)
-        for (j = i; j < (N - 1 - i); j++)
+    for (i = 0; i < N - 1; i++){
+        for (j = 0; j < (N - 1 - i); j++)
 	   if (A[j] > A[j + 1]) {	/* out of order -> need to swap ! */
 	      tmp = A[j];
 	      A[j] = A[j + 1];
 	      A[j + 1] = tmp;
     	   }
-    Exit(A[0]);		/* and then we're done -- should be 0! */
+       //for (k = 0;k < N; k++)
+         //   Print(A[k]);
+    }
+    for (i = 0; i < N; i++)
+        if(A[i]!=i+1)
+            Exit(-1);
+    Exit(A[0]-1);		/* and then we're done -- should be 0! */
 }

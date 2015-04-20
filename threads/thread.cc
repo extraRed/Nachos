@@ -79,7 +79,7 @@ Thread::Thread(char* threadName)
 Thread::~Thread()
 {
     DEBUG('t', "Deleting thread \"%s\"\n", name);
-
+    
     ASSERT(this != currentThread);
     if (stack != NULL)
 	DeallocBoundedArray((char *) stack, StackSize * sizeof(int));
@@ -87,6 +87,9 @@ Thread::~Thread()
     //printf("TID %d returned\n",this->getTID());
     //by LMX
     TIDs[this->getTID()]=0;       //return the TID
+#ifdef USER_PROGRAM
+    delete space;
+#endif
            
 }
 
@@ -209,7 +212,7 @@ Thread::Yield ()
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
     
     ASSERT(this == currentThread);
-    
+    printf("Yielding thread:%s\n", getName());
     DEBUG('t', "Yielding thread \"%s\"\n", getName());
     
     nextThread = scheduler->FindNextToRun();
