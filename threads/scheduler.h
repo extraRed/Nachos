@@ -26,16 +26,32 @@ class Scheduler {
     void ReadyToRun(Thread* thread);	// Thread can be dispatched.
     Thread* FindNextToRun();		// Dequeue first thread on the ready 
 					// list, if any, and return thread.
+    Thread* FindNextBlocked();
     void Run(Thread* nextThread);	// Cause nextThread to start running
     void Print();			// Print contents of ready list
 
     //by LMX
-    List* getReadyList();
-    
+    List* getReadyList(){return readyList;}
+    List* getBlockedList(){return blockedList;}
+#ifdef USER_PROGRAM
+    //List* getSuspendReadyList(){return suspend_readyList;}
+    //List* getSuspendBlockedList(){return suspend_blockedList;}
+    List* getSuspendList(){return suspendList;}
+    void ActiveOne();
+    void SuspendOne();
+#endif
+
   private:
     List *readyList;  		// queue of threads that are ready to run,
 				// but not running
+    List *blockedList;
+#ifdef USER_PROGRAM
+    //List *suspend_readyList;
+    //List *suspend_blockedList;
+    List *suspendList;
+#endif
     Timer *timerInt;
+
 };
 
 #endif // SCHEDULER_H

@@ -46,6 +46,7 @@ BitMap::~BitMap()
 void
 BitMap::Mark(int which) 
 { 
+    ASSERT(Test(which)==FALSE);
     ASSERT(which >= 0 && which < numBits);
     map[which / BitsInWord] |= 1 << (which % BitsInWord);
 }

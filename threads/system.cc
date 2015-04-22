@@ -217,17 +217,34 @@ ShowInfo(int arg)
     Thread *t = (Thread *)(arg);
     printf("TID: %d\tStatus: %s\tName: %s\n", t->getTID(), t->getStatus(), t->getName());
 }
-
+void 
+ShowBlockedInfo(int arg)
+{
+    Thread *t = (Thread *)(arg);
+    if(t->getStatusValue()==BLOCKED)
+        printf("TID: %d\tStatus: %s\tName: %s\n", t->getTID(), t->getStatus(), t->getName());
+}
 void
 ThreadShow()
 {
     printf("Showing threads' information...\n");
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
-    printf("TID: %d\tStatus: %s\tName: %s\n", currentThread->getTID(), currentThread ->getStatus(), currentThread->getName());
+    //printf("TID: %d\tStatus: %s\tName: %s\n", currentThread->getTID(), currentThread ->getStatus(), currentThread->getName());
     List *l = new List();
     l = scheduler->getReadyList();
     if(!l->IsEmpty()){
         l->Mapcar(ShowInfo);
     }
+#ifdef USER_PROGRAM
+    l = scheduler->getSuspendList();
+    if(!l->IsEmpty()){
+        l->Mapcar(ShowInfo);
+    }
+#endif 
+    l = scheduler->getBlockedList();
+    if(!l->IsEmpty()){
+        l->Mapcar(ShowBlockedInfo);
+    }
+    
     (void) interrupt->SetLevel(oldLevel);
 }

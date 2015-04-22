@@ -21,7 +21,7 @@ class PageManager
 
             void loadPage(int address);             // load page for the current thread
    
-            int swapPage();            // unload page for the current thread 
+            int swapPage(int entryid, char *filename);            // unload page for the current thread 
 
             int getSwapPageFIFO();         // swap a page from the memory to the disk
             

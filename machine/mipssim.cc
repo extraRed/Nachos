@@ -15,6 +15,7 @@
 #include "machine.h"
 #include "mipssim.h"
 #include "system.h"
+#include "synch.h"
 
 static void Mult(int a, int b, bool signedArith, int* hiPtr, int* loPtr);
 
@@ -26,12 +27,11 @@ static void Mult(int a, int b, bool signedArith, int* hiPtr, int* loPtr);
 //	This routine is re-entrant, in that it can be called multiple
 //	times concurrently -- one for each thread executing user code.
 //----------------------------------------------------------------------
-
+//Semaphore *sem=new Semaphore("TestSus",0);
 void
 Machine::Run()
 {
     Instruction *instr = new Instruction;  // storage for decoded instruction
-
     if(DebugIsEnabled('m'))
         printf("Starting thread \"%s\" at time %d\n",
 	       currentThread->getName(), stats->totalTicks);
@@ -39,6 +39,16 @@ Machine::Run()
     for (;;) {
         OneInstruction(instr);
 	interrupt->OneTick();
+    /*
+       if(stats->totalTicks==10000)
+            sem->P();
+       if(stats->totalTicks==20000)
+            scheduler->SuspendOne();
+       if(stats->totalTicks==30000)
+            sem->V();
+       if(stats->totalTicks==40000)
+            scheduler->ActiveOne();
+      */
 	if (singleStep && (runUntilTime <= stats->totalTicks))
 	  Debugger();
     }

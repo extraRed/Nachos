@@ -14,9 +14,10 @@
 #include "addrspace.h"
 #include "synch.h"
 
-void DoNothing(int which)
+void Test(int which)
 {
-    printf("Enter New Thread\n");
+    printf("Enter New Thread\n"); 
+    currentThread->RestoreUserState();
     currentThread->space->RestoreState();
     machine->Run();
 }
@@ -56,8 +57,8 @@ StartProcess(char *filename)
 
     space->InitRegisters();		// set the initial register values
     space->RestoreState();		// load page table register
-    /*
-    OpenFile *executable2 = fileSystem->Open("../test/matmult");
+    
+    OpenFile *executable2 = fileSystem->Open("../test/sort");
     AddrSpace *space2;
 
     if (executable2 == NULL) {
@@ -71,18 +72,17 @@ StartProcess(char *filename)
     char *tid2=new char[10];
     sprintf(tid2,"%d",thread->getTID());
     int filesize2 = (space2->getPageNum()) * PageSize ;
-    strcpy(tempfile2,"../test/matmult");
+    strcpy(tempfile2,"../test/sort");
     strcat(tempfile2,tid2);
     //printf("name:%s\n",tempfile);
     space2->CreateTempFile(executable2, tempfile2, filesize2);
-    space->InitRegisters();
     
     thread->space = space2;
     thread->space->setFileName(tempfile2);
     thread->InitUserReg();
-    thread->Fork(DoNothing, 0);
+    thread->Fork(Test, 0);
     delete executable2;			// close file
-    */
+    
     machine->Run();			// jump to the user progam
     ASSERT(FALSE);			// machine->Run never returns;
 					// the address space exits

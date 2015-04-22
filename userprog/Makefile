@@ -436,7 +436,7 @@ machine.o: ../machine/machine.cc /usr/include/stdc-predef.h \
  ../filesys/openfile.h ../threads/scheduler.h ../threads/list.h \
  ../machine/timer.h ../machine/interrupt.h ../threads/list.h \
  ../machine/stats.h ../userprog/pageManager.h ../userprog/bitmap.h \
- ../filesys/openfile.h
+ ../filesys/openfile.h ../threads/synch.h
 mipssim.o: ../machine/mipssim.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../machine/machine.h ../threads/utility.h \
  ../threads/copyright.h ../threads/bool.h ../machine/sysdep.h \
@@ -478,7 +478,7 @@ translate.o: ../machine/translate.cc /usr/include/stdc-predef.h \
  ../machine/machine.h ../threads/scheduler.h ../threads/list.h \
  ../machine/timer.h ../machine/interrupt.h ../threads/list.h \
  ../machine/stats.h ../userprog/pageManager.h ../userprog/bitmap.h \
- ../filesys/openfile.h
+ ../filesys/openfile.h ../threads/synch.h
 pageManager.o: ../userprog/pageManager.cc /usr/include/stdc-predef.h \
  ../userprog/pageManager.h ../userprog/bitmap.h ../threads/copyright.h \
  ../threads/utility.h ../threads/copyright.h ../threads/bool.h \

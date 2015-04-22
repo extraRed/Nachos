@@ -212,10 +212,11 @@ AddrSpace::InitRegisters()
 //	For now, nothing!
 //----------------------------------------------------------------------
 
-void AddrSpace::SaveState() 
+void 
+AddrSpace::SaveState() 
 {
-    pageTable = machine->pageTable;
-    numPages = machine->pageTableSize;
+    //pageTable = machine->pageTable;
+    //numPages = machine->pageTableSize;
 }
 
 //----------------------------------------------------------------------
@@ -226,8 +227,10 @@ void AddrSpace::SaveState()
 //      For now, tell the machine where to find the page table.
 //----------------------------------------------------------------------
 
-void AddrSpace::RestoreState() 
+void 
+AddrSpace::RestoreState() 
 {
+    printf("Change Pagetable to %s\n", currentThread->getName());
     machine->pageTable = pageTable;
     machine->pageTableSize = numPages;
     for (int i = 0; i < TLBSize; i++)
@@ -235,12 +238,14 @@ void AddrSpace::RestoreState()
 }
 
 
-int AddrSpace::AddrTrans ( int virtAddr)
+int 
+AddrSpace::AddrTrans ( int virtAddr)
 {
 	return pageTable[virtAddr/PageSize].physicalPage * PageSize + (virtAddr %PageSize);
 }
 
-int AddrSpace::getStackReg()
+int 
+AddrSpace::getStackReg()
 {
     return machine->registers[StackReg];
 }
@@ -248,7 +253,8 @@ int AddrSpace::getStackReg()
 //Write the Executable file into a file, so we can load them when we meet a pagefault
 char Buffer[0x10000];  //create a large buffer
 
-void AddrSpace::CreateTempFile(OpenFile *executable, char *tempfile, int filesize)
+void 
+AddrSpace::CreateTempFile(OpenFile *executable, char *tempfile, int filesize)
 {
     NoffHeader noffH;
     executable -> ReadAt((char *)&noffH, sizeof(noffH), 0);
@@ -269,4 +275,29 @@ void AddrSpace::CreateTempFile(OpenFile *executable, char *tempfile, int filesiz
     OpenFile *tempexe = fileSystem -> Open(tempfile);
     tempexe -> WriteAt(Buffer, filesize, 0);
     delete tempexe;  
+}
+
+void
+AddrSpace::SwapOut()
+{
+   for(int i = 0;i < numPages;i++){
+        if(pageTable[i].valid==TRUE){
+            int phynum, vpn;
+            vpn=pageTable[i].virtualPage;
+            phynum=pageTable[i].physicalPage;
+            printf("Page %d will be swapped out!\n",phynum);
+            pageTable[i].valid = FALSE;
+     
+            //open file and write memory data, if the page is dirty
+            if(pageTable[i].dirty == TRUE){  
+                printf("Page %d is dirty, write back to %s\n",phynum, filename);       
+                OpenFile *executable = fileSystem -> Open(filename);     
+                executable ->WriteAt(&(machine ->mainMemory[phynum * PageSize]), PageSize, vpn * PageSize);
+                delete executable;
+            }
+            //clean the page
+            pageManager->cleanPage(phynum);  
+        }
+   }
+   setAvailPageNum(NumPhysPages/4);
 }

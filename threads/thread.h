@@ -59,7 +59,7 @@
 
 
 // Thread state
-enum ThreadStatus { JUST_CREATED, RUNNING, READY, BLOCKED };
+enum ThreadStatus { JUST_CREATED, RUNNING, READY, BLOCKED, READY_SUSPEND, BLOCKED_SUSPEND };
 
 // external function, dummy routine whose sole job is to call Thread::Print
 extern void ThreadPrint(int arg);	 
@@ -106,13 +106,14 @@ class Thread {
 
     
     //by LMX
-    int getUID();
-    int getTID();
-    int getPriority();
+    int getUID(){return UID;}
+    int getTID(){return TID;}
+    int getPriority(){return priority;}
     void setPriority(int priority);
     char* getStatus();
-    int getTimeSlice() ;
-    void setTimeSlice(int slice);
+    ThreadStatus getStatusValue(){return status;}
+    int getTimeSlice(){return timeSlice;}
+    void setTimeSlice(int slice){timeSlice=slice;}
     void performTick();
     
   private:
@@ -148,6 +149,8 @@ class Thread {
     void InitUserReg();
 
     AddrSpace *space;			// User code this thread is running.
+    void Suspend();
+    void Active();
 #endif
 };
 

@@ -55,7 +55,7 @@ void
 PageManager::loadPage(int address)
 {      
      char *filename = currentThread ->space->getFileName();      // get the executable file name of the thread
-     int phynum;
+     int phynum, entryid;
      int vpn = address/ PageSize;
 
      printf("PageFault from virtual page %d!\n", vpn);
@@ -63,8 +63,12 @@ PageManager::loadPage(int address)
      // find a clean page in the memory for the program     
      int availPage=currentThread->space->getAvailPageNum();
      ASSERT(availPage>=0);
-     if(availPage==0) {
-         phynum = swapPage();
+     if(availPage==0 || numClean()==0) {
+         //entryid= getSwapPageFIFO();  
+         entryid = getSwapPageLRU();  
+         ASSERT(entryid != -1 && machine->pageTable[entryid].valid==TRUE);
+         char *filename=currentThread->space->getFileName();
+         phynum = swapPage(entryid,filename);
          ASSERT(phynum!=-1);
      }else{
          phynum = findPage();
@@ -97,25 +101,21 @@ PageManager::loadPage(int address)
 
 
 int
-PageManager::swapPage()
+PageManager::swapPage(int entryid, char *filename)
 {
-     int  entryid, phynum, vpn, pagenum;
-     pagenum = machine->pageTableSize;
-     //entryid= getSwapPageFIFO();  
-     entryid = getSwapPageLRU();  
-     ASSERT(entryid != -1 && machine->pageTable[entryid].valid==TRUE);
-
+     ASSERT(machine->pageTable[entryid].valid==TRUE);
+     int phynum, vpn;
      vpn=machine->pageTable[entryid].virtualPage;
      phynum=machine->pageTable[entryid].physicalPage;
     
-    printf("Page Table is full! Page %d will be swapped out!\n",phynum);
+     printf("Page %d will be swapped out!\n",phynum);
 
      machine ->pageTable[entryid].valid = FALSE;
      
      //open file and write memory data, if the page is dirty
      if(machine ->pageTable[entryid].dirty == TRUE)
      {
-        char *filename=currentThread->space->getFileName();
+        
         printf("Page %d is dirty, write back to %s\n",phynum, filename);
         
          OpenFile *executable = fileSystem -> Open(filename);     

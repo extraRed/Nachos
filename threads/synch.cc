@@ -90,10 +90,21 @@ Semaphore::V()
 {
     Thread *thread;
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
-
     thread = (Thread *)queue->Remove();     // disable interrupts
-    if (thread != NULL)	                            // make thread ready, consuming the V immediately
-	scheduler->ReadyToRun(thread);
+    if (thread != NULL){	                            // make thread ready, consuming the V immediately
+        printf("blocked name:%s\n",thread->getName());
+        if(thread->getStatusValue()==BLOCKED)
+            scheduler->ReadyToRun(thread);
+#ifdef USER_PROGRAM
+        else{
+            ASSERT(thread->getStatusValue()==BLOCKED_SUSPEND);
+            printf("Thread %s changes status from %s to READY_SUSPEND\n",thread->getName(),thread->getStatus());
+            thread->setStatus(READY_SUSPEND);
+            scheduler->getSuspendList()->Append((void *)thread);
+            ThreadShow();
+        }
+#endif
+    }
     value++;
     (void) interrupt->SetLevel(oldLevel);       // re-enable interrupts
 }
@@ -124,7 +135,7 @@ void
 Lock::Release() 
 {
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
-    //ASSERT(isHeldByCurrentThread());                           // the lock must be held by the current thread
+    ASSERT(isHeldByCurrentThread());                           // the lock must be held by the current thread
     lock->V();
     owner=NULL;
     (void) interrupt->SetLevel(oldLevel);                       // re-enable interrupts

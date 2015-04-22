@@ -35,10 +35,11 @@ class AddrSpace {
     int getStackReg();
     int getPageNum(){return numPages;}
     int getAvailPageNum(){return availNumPages;}
-    int setAvailPageNum(int pages){ availNumPages=pages;}
+    void setAvailPageNum(int pages){ availNumPages=pages;}
     char *getFileName(){return filename;}
     void setFileName(char *f){filename=f;}
     void CreateTempFile(OpenFile *executable, char *tempfile, int filesize);
+    void SwapOut();
   private:
     TranslationEntry *pageTable;	// Assume linear page table translation
 					// for now!

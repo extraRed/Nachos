@@ -45,13 +45,6 @@ static void RoundRobinSchedule(int dummy) {
         currentThread->setTimeSlice(DefaultTimeSlice);
         interrupt->YieldOnReturn();
     }
-
-	//currentThread->setPriority(++priority);
-//    if(priority >= 255) {
-//	printf("Priority is out of range\n");
-//        scheduler->AdjustAllPriority();
-//    }
-        //interrupt->YieldOnReturn();
 }
 
 
@@ -59,6 +52,12 @@ static void RoundRobinSchedule(int dummy) {
 Scheduler::Scheduler()
 { 
     readyList = new List; 
+    blockedList = new List;
+#ifdef USER_PROGRAM
+    //suspend_readyList = new List;
+    //suspend_blockedList = new List;
+    suspendList = new List;
+#endif
   //  timerInt= new Timer(RoundRobinSchedule, 0, false);
 } 
 
@@ -70,6 +69,11 @@ Scheduler::Scheduler()
 Scheduler::~Scheduler()
 { 
     delete readyList; 
+    delete blockedList;
+ #ifdef USER_PROGRAM
+    //delete suspend_readyList;
+    //delete suspend_blockedList;
+ #endif
 } 
 
 //----------------------------------------------------------------------
@@ -101,8 +105,59 @@ Scheduler::ReadyToRun (Thread *thread)
 Thread *
 Scheduler::FindNextToRun ()
 {
-    return (Thread *)readyList->Remove();
+   return (Thread *)readyList->Remove();
+    /*
+   Thread* next = (Thread *)readyList->Remove();
+   while(next!=NULL){
+        if(next->getStatusValue()==READY)
+            return next;
+        next = (Thread *)readyList->Remove();
+   }
+   return NULL;
+   */
 }
+
+Thread*
+Scheduler::FindNextBlocked()
+{
+   Thread* next = (Thread *)blockedList->Remove();
+   while(next!=NULL){
+        if(next->getStatusValue()==BLOCKED)
+            return next;
+        next = (Thread *)blockedList->Remove();
+   }
+   return NULL;
+}
+
+#ifdef USER_PROGRAM
+//by LMX
+void
+Scheduler::ActiveOne()
+{
+    Thread *next = (Thread *)suspendList->Remove();
+    if(next!=NULL){
+        next->Active();
+        return ;
+    }
+}
+
+//suspend blocked first, then ready
+void
+Scheduler::SuspendOne()
+{
+    Thread *next = FindNextBlocked();
+    if(next!=NULL){
+        next->Suspend();
+        return ;
+    }
+    next = FindNextToRun();
+    if(next!=NULL){
+        next->Suspend();
+        return ;
+    }
+}
+    
+#endif
 
 //----------------------------------------------------------------------
 // Scheduler::Run
@@ -159,9 +214,8 @@ Scheduler::Run (Thread *nextThread)
     
 #ifdef USER_PROGRAM
     if (currentThread->space != NULL) {		// if there is an address space
-    printf("change pagetable\n");
         currentThread->RestoreUserState();     // to restore, do it.
-	currentThread->space->RestoreState();
+        currentThread->space->RestoreState();
     }
 #endif
 }
@@ -178,13 +232,3 @@ Scheduler::Print()
     readyList->Mapcar((VoidFunctionPtr) ThreadPrint);
 }
 
-//by LMX
-//----------------------------------------------------------------------
-// Scheduler::getReadyList
-// 	Return the readyList
-//----------------------------------------------------------------------
-List*
-Scheduler::getReadyList()
-{
-    return readyList;
-}

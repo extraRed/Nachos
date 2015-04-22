@@ -186,6 +186,8 @@ class Machine {
     TranslationEntry *pageTable;
     unsigned int pageTableSize;
 
+    void *lock;     //should be a really lock from Class Lock, but will meet recursive "include"!
+
   private:
     bool singleStep;		// drop back into the debugger after each
 				// simulated instruction

@@ -33,6 +33,7 @@
 #include "machine.h"
 #include "addrspace.h"
 #include "system.h"
+#include "synch.h"
 
 // Routines for converting Words and Short Words to and from the
 // simulated machine's format of little endian.  These end up
@@ -92,12 +93,16 @@ Machine::ReadMem(int addr, int size, int *value)
     int physicalAddress;
     
     DEBUG('a', "Reading VA 0x%x, size %d\n", addr, size);
-    
+    //Lock *clock = (Lock *)(lock);
+    //clock->Acquire();
     exception = Translate(addr, &physicalAddress, size, FALSE);
+    //clock->Release();
     if (exception != NoException) {
 	machine->RaiseException(exception, addr);
       if (exception == TLBMissException || PageFaultException){
+        //clock->Acquire();
         exception = Translate(addr, &physicalAddress, size, FALSE);
+        //clock->Release();
         ASSERT(exception == NoException);
         if (exception != NoException){
             return FALSE;
@@ -149,12 +154,16 @@ Machine::WriteMem(int addr, int size, int value)
     int physicalAddress;
      
     DEBUG('a', "Writing VA 0x%x, size %d, value 0x%x\n", addr, size, value);
-
+    //Lock *clock = (Lock *)(lock);
+    //clock->Acquire();
     exception = Translate(addr, &physicalAddress, size, TRUE);
+    //clock->Release();
     if (exception != NoException) {
 	machine->RaiseException(exception, addr);
       if (exception == TLBMissException || PageFaultException){
+        //clock->Acquire();
         exception = Translate(addr, &physicalAddress, size, TRUE);
+        //clock->Release();
         ASSERT(exception == NoException);
         if (exception != NoException){
             return FALSE;
@@ -201,7 +210,7 @@ Machine::WriteMem(int addr, int size, int value)
 
 ExceptionType
 Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
-{
+{  
     //printf("%s enter translating!",currentThread->getName());
     int i;
     unsigned int vpn, offset;
@@ -225,7 +234,7 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
     vpn = (unsigned) virtAddr / PageSize;
     offset = (unsigned) virtAddr % PageSize;
 
-    //printf("Translating virtual page:%d , ppn is %d, entry is %d\n",vpn,pageTable[vpn].virtualPage,pageTable[vpn].valid);
+//    printf("Translating virtual page:%d\n",vpn);
     if (tlb == NULL) {		// => page table => vpn is index into table
 	if (vpn >= pageTableSize) {
 	    DEBUG('a', "virtual page # %d too large for page table size %d!\n", 

@@ -125,6 +125,7 @@ Thread::Fork(VoidFunctionPtr func, int arg)
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
     scheduler->ReadyToRun(this);	// ReadyToRun assumes that interrupts 
 					// are disabled!
+    //by LMX
     (void) interrupt->SetLevel(oldLevel);
 
     //by LMX
@@ -264,7 +265,11 @@ Thread::Sleep ()
     
     DEBUG('t', "Sleeping thread \"%s\"\n", getName());
 
+    printf("Thread %s changes status from %s to BLOCKED\n",name,getStatus());
     status = BLOCKED;
+    scheduler->getBlockedList()->Append((void *) this);
+    ThreadShow();
+    
     while ((nextThread = scheduler->FindNextToRun()) == NULL)
 	interrupt->Idle();	// no one to run, wait for an interrupt
         
@@ -373,40 +378,64 @@ Thread::InitUserReg()
     userRegisters[NextPCReg] = 4;
     userRegisters[StackReg] = space->getStackReg();
 }
+
+void
+Thread::Suspend()
+{
+    printf("Now %d physical pages left\n",pageManager->numClean());
+    printf("Suspend called!\n");
+    this->space->SwapOut();
+    printf("Now %d physical pages left\n",pageManager->numClean());
+    printf("Thread %s changes status from %s ",name,getStatus());
+    ASSERT(status== READY || BLOCKED);
+    scheduler->getSuspendList()->Append((void *)this);
+    if(status==READY){
+        status=READY_SUSPEND;
+    }else{
+        status=BLOCKED_SUSPEND;
+    }
+    printf("to %s\n",getStatus());
+    ThreadShow();
+}
+
+void 
+Thread::Active()
+{
+    printf("Active called!\n");
+    printf("Thread %s changes status from %s ",name,getStatus());
+    ASSERT(status==READY_SUSPEND || BLOCKED_SUSPEND);
+    if(status==READY_SUSPEND){
+        scheduler->ReadyToRun(this);
+    }else{
+        status=BLOCKED;
+        scheduler->getBlockedList()->Append((void *)this);
+    }
+    printf("to %s\n",getStatus());
+    ThreadShow();
+}
+
 #endif
 
 //by LMX
-int
-Thread::getTID()
-{
-    return this->TID;
-}
-
-int 
-Thread::getUID()
-{
-    return this->UID;
-}
-
 char* 
 Thread::getStatus()
 {
-    switch(this->status){
+    switch(status){
         case 1:
             return "RUNNING";
         case 2:
             return "READY";
         case 3:
             return "BLOCKED";
+#ifdef USER_PROGRAM
+        case 4:
+            return "READY_SUSPEND";
+        case 5:
+            return "BLOCKED_SUSPEND";
+#endif
         default:
             ASSERT(1==0);
     }
-}
-
-int
-Thread::getPriority()
-{
-    return this->priority;
 }
 
 void 
@@ -418,18 +447,6 @@ Thread::setPriority(int priority)
         this->priority=0;
     else
         this->priority=priority;
-}
-
-int
-Thread::getTimeSlice() 
-{ 
-    return this->timeSlice; 
-}
-
-void 
-Thread::setTimeSlice(int slice) 
-{ 
-    this->timeSlice = slice; 
 }
 
 void 
