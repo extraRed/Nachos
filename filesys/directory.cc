@@ -91,7 +91,9 @@ int
 Directory::FindIndex(char *name)
 {
     for (int i = 0; i < tableSize; i++)
-        if (table[i].inUse && !strncmp(table[i].name, name, FileNameMaxLen))
+        if(table[i].inUse==TRUE)
+        //if (table[i].inUse && !strncmp(table[i].name, name, FileNameMaxLen))
+         if (table[i].inUse && table[i].name==name)
 	    return i;
     return -1;		// name not in directory
 }
@@ -135,8 +137,10 @@ Directory::Add(char *name, int newSector)
     for (int i = 0; i < tableSize; i++)
         if (!table[i].inUse) {
             table[i].inUse = TRUE;
-            strncpy(table[i].name, name, FileNameMaxLen); 
+            table[i].name = name;
+            //strncpy(table[i].name, name, FileNameMaxLen); 
             table[i].sector = newSector;
+            //printf("In add %d, name: %s sector:%d\n",i,table[i].name,table[i].sector);
         return TRUE;
 	}
     return FALSE;	// no space.  Fix when we have extensible files.
@@ -171,7 +175,7 @@ Directory::List()
 {
    for (int i = 0; i < tableSize; i++)
 	if (table[i].inUse)
-	    printf("%s\n", table[i].name);
+	    printf("entry %d, %s\n", i, table[i].name);
 }
 
 //----------------------------------------------------------------------

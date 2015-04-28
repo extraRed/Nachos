@@ -213,7 +213,7 @@ Thread::Yield ()
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
     
     ASSERT(this == currentThread);
-    printf("Yielding thread:%s\n", getName());
+    //printf("Yielding thread:%s\n", getName());
     DEBUG('t', "Yielding thread \"%s\"\n", getName());
     
     nextThread = scheduler->FindNextToRun();
@@ -265,10 +265,10 @@ Thread::Sleep ()
     
     DEBUG('t', "Sleeping thread \"%s\"\n", getName());
 
-    printf("Thread %s changes status from %s to BLOCKED\n",name,getStatus());
+    //printf("Thread %s changes status from %s to BLOCKED\n",name,getStatus());
     status = BLOCKED;
     scheduler->getBlockedList()->Append((void *) this);
-    ThreadShow();
+    //ThreadShow();
     
     while ((nextThread = scheduler->FindNextToRun()) == NULL)
 	interrupt->Idle();	// no one to run, wait for an interrupt

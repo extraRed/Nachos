@@ -32,6 +32,7 @@ OpenFile::OpenFile(int sector)
     hdr = new FileHeader;
     hdr->FetchFrom(sector);
     seekPosition = 0;
+    headSector = sector;
 }
 
 //----------------------------------------------------------------------
@@ -74,16 +75,20 @@ OpenFile::Seek(int position)
 int
 OpenFile::Read(char *into, int numBytes)
 {
+   hdr->setAccessTime(stats->totalTicks);
    int result = ReadAt(into, numBytes, seekPosition);
    seekPosition += result;
+   hdr->WriteBack(headSector);
    return result;
 }
 
 int
 OpenFile::Write(char *into, int numBytes)
 {
+   hdr->setModifyTime(stats->totalTicks);
    int result = WriteAt(into, numBytes, seekPosition);
    seekPosition += result;
+   hdr->WriteBack(headSector);
    return result;
 }
 
@@ -119,7 +124,6 @@ OpenFile::ReadAt(char *into, int numBytes, int position)
     int fileLength = hdr->FileLength();
     int i, firstSector, lastSector, numSectors;
     char *buf;
-
     if ((numBytes <= 0) || (position >= fileLength))
     	return 0; 				// check request
     if ((position + numBytes) > fileLength)		
@@ -150,11 +154,22 @@ OpenFile::WriteAt(char *from, int numBytes, int position)
     int i, firstSector, lastSector, numSectors;
     bool firstAligned, lastAligned;
     char *buf;
-
-    if ((numBytes <= 0) || (position >= fileLength))
+    //printf("bytes: %d, pos: %d, length: %d\n",numBytes,position,fileLength);
+    if ((numBytes <= 0) || (position > fileLength))
 	return 0;				// check request
-    if ((position + numBytes) > fileLength)
-	numBytes = fileLength - position;
+    //if ((position + numBytes) > fileLength)
+	//numBytes = fileLength - position;
+    if ((position + numBytes) > fileLength){
+         //if the bytes going to write will exceed the limit of the file size
+         //first, allocate new disk sector
+         printf("The file size needs to be increased! Size of file now: %d \n", hdr->FileLength());
+         bool flag = fileSystem ->ChangeFileSize(hdr, position + numBytes);
+         if(flag == FALSE) 
+            return 0;
+         
+         printf("Size of file now: %d \n", hdr->FileLength());
+         
+    }
     DEBUG('f', "Writing %d bytes at %d, from file of length %d.\n", 	
 			numBytes, position, fileLength);
 

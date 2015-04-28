@@ -28,6 +28,16 @@
 #include "filehdr.h"
 
 //----------------------------------------------------------------------
+// FileHeader::Init
+// 	Set the type (directoty or file) and the path of file
+//----------------------------------------------------------------------
+void FileHeader::Init(int type, int path)
+{
+    this->type = type;
+    this->createTime = stats->totalTicks;
+    this->path = path;
+}
+//----------------------------------------------------------------------
 // FileHeader::Allocate
 // 	Initialize a fresh file header for a newly created file.
 //	Allocate data blocks for the file out of the map of free disk blocks.
@@ -43,11 +53,31 @@ FileHeader::Allocate(BitMap *freeMap, int fileSize)
 { 
     numBytes = fileSize;
     numSectors  = divRoundUp(fileSize, SectorSize);
+    int leftSectors = numSectors; 
     if (freeMap->NumClear() < numSectors)
 	return FALSE;		// not enough space
-
-    for (int i = 0; i < numSectors; i++)
-	dataSectors[i] = freeMap->Find();
+    //Do not need first indexes
+    if (numSectors <= NumDirect){
+        for (int i = 0; i < numSectors; i++)
+	    dataSectors[i] = freeMap->Find();
+        return TRUE;
+    }else{
+        for (int i = 0; i < NumDirect; i++)
+	    dataSectors[i] = freeMap->Find();
+        leftSectors -= NumDirect;
+    }
+    for(int i=0;leftSectors>0;i++,leftSectors-=NumFirstDirect){
+        dataSectors[NumDirect+i] = freeMap->Find();
+        //how many indexes will be used(total is 32)
+        int numUse = leftSectors<NumFirstDirect?leftSectors:NumFirstDirect;
+        int *firstIndex = new int[numUse];
+        for(int j=0;j<numUse;j++){
+            firstIndex[j]=freeMap->Find();
+        }
+        //Write back to the sector that contains first indexes
+        synchDisk->WriteSector(dataSectors[NumDirect+i],(char*)firstIndex);
+        delete firstIndex;
+    } 
     return TRUE;
 }
 
@@ -61,9 +91,31 @@ FileHeader::Allocate(BitMap *freeMap, int fileSize)
 void 
 FileHeader::Deallocate(BitMap *freeMap)
 {
-    for (int i = 0; i < numSectors; i++) {
-	ASSERT(freeMap->Test((int) dataSectors[i]));  // ought to be marked!
-	freeMap->Clear((int) dataSectors[i]);
+    int leftSectors = numSectors;
+    if (numSectors <= NumDirect){
+        for (int i = 0; i < numSectors; i++) {
+	    ASSERT(freeMap->Test((int) dataSectors[i]));  // ought to be marked!
+	    freeMap->Clear((int) dataSectors[i]);
+        }
+        return ;
+    }else{
+        for (int i = 0; i < NumDirect; i++) {
+	    ASSERT(freeMap->Test((int) dataSectors[i]));  // ought to be marked!
+	    freeMap->Clear((int) dataSectors[i]);
+        }
+        leftSectors -= NumDirect;
+    }
+    for(int i=0; leftSectors>0;i++,leftSectors-=NumFirstDirect){
+        int numUse = leftSectors<NumFirstDirect?leftSectors:NumFirstDirect;
+        char *buffer = new char[SectorSize];
+        synchDisk->ReadSector(dataSectors[NumDirect+i], buffer);
+        int *firstIndex=(int *)buffer;
+        for(int j=0;j<numUse;j++){
+           ASSERT(freeMap->Test((int) firstIndex[j]));  // ought to be marked!
+	    freeMap->Clear((int) firstIndex[j]);
+        }
+        ASSERT(freeMap->Test((int) dataSectors[NumDirect+i]));  // ought to be marked!
+	 freeMap->Clear((int) dataSectors[NumDirect+i]);
     }
 }
 
@@ -106,7 +158,22 @@ FileHeader::WriteBack(int sector)
 int
 FileHeader::ByteToSector(int offset)
 {
-    return(dataSectors[offset / SectorSize]);
+    int sectorIndex = offset / SectorSize;
+    if(sectorIndex < NumDirect)
+        return(dataSectors[sectorIndex]);
+    else{
+        sectorIndex-=NumDirect;
+        for(int i=0;sectorIndex>=0;i++,sectorIndex-=NumFirstDirect){
+            if(sectorIndex<NumFirstDirect){
+                char *buffer = new char[SectorSize];
+                synchDisk->ReadSector(dataSectors[NumDirect+i], buffer);
+                int *firstIndex = (int *)buffer;
+                int sector = firstIndex[sectorIndex];
+                delete buffer;
+                return sector;
+            }
+        }
+    }
 }
 
 //----------------------------------------------------------------------
@@ -129,12 +196,38 @@ FileHeader::FileLength()
 void
 FileHeader::Print()
 {
+    int i;
+    printf("type:%d, createTime: %d, accessTime: %d, modifyTime: %d\n", type, createTime, accessTime, modifyTime);
+    printf("FileHeader contents.  File size: %d.  File blocks:\n", numBytes);
+    int leftSectors = numSectors;
+    if(numSectors<NumDirect){
+        printf("Direct indexes:\n");
+        for (i = 0; i < numSectors; i++)
+	    printf("%d ", dataSectors[i]);
+        printf("\n");
+        return ;
+    }else{
+        printf("Direct indexes:\n");
+        for (i = 0; i < NumDirect; i++)
+	    printf("%d ", dataSectors[i]);
+        printf("\n");
+        leftSectors -= NumDirect;
+    }
+    for(int i=0; leftSectors>0;i++,leftSectors-=NumFirstDirect){
+        int numUse = leftSectors<NumFirstDirect?leftSectors:NumFirstDirect;
+        char *buffer = new char[SectorSize];
+        synchDisk->ReadSector(dataSectors[NumDirect+i], buffer);
+        int *firstIndex=(int *)buffer;
+        printf("First indexes: %d\n",dataSectors[NumDirect+i]);
+        printf("Direct indexes of the first index:\n");
+        for(int j=0;j<numUse;j++){
+            printf("%d ",firstIndex[j]);
+        }
+        printf("\n");
+    }
+    /*
     int i, j, k;
     char *data = new char[SectorSize];
-
-    printf("FileHeader contents.  File size: %d.  File blocks:\n", numBytes);
-    for (i = 0; i < numSectors; i++)
-	printf("%d ", dataSectors[i]);
     printf("\nFile contents:\n");
     for (i = k = 0; i < numSectors; i++) {
 	synchDisk->ReadSector(dataSectors[i], data);
@@ -147,4 +240,122 @@ FileHeader::Print()
         printf("\n"); 
     }
     delete [] data;
+    */
+}
+
+//by LMX
+//----------------------------------------------------------------------
+// FileHeader::ChangeSize
+//     Reset the size of the file, this function is used when we increase the size of the file
+//----------------------------------------------------------------------
+
+bool
+FileHeader::ChangeSize(BitMap *freeMap, int newSize)
+{  
+     int newSectorNum = divRoundUp(newSize, SectorSize);
+     ASSERT(newSectorNum >= numSectors)
+     if(newSize > MaxFileSize || (freeMap ->NumClear()) < (newSectorNum - numSectors))
+        return FALSE;
+
+     if(numSectors == newSectorNum){    //if the accural disk sector remain same, do nothing                               
+         numBytes = newSize;
+     }else{
+         IncreaseFile(freeMap, newSectorNum - numSectors);
+         numSectors = newSectorNum;
+         numBytes = newSize;
+     } 
+     return TRUE;
+}
+
+//----------------------------------------------------------------------
+// FileHeader::IncreaseFile
+// 	
+//     Increase the size of the file, more precisely, increase the number of disk sectors 
+//      allocated for that files
+//
+//----------------------------------------------------------------------
+
+void
+FileHeader::IncreaseFile(BitMap *freeMap, int newSectors)
+{
+     if (numSectors+newSectors<=NumDirect){ //Increased file can also just use first indexes
+            for(int i=0;i<newSectors;i++)
+                dataSectors[numSectors+i]=freeMap->Find();
+     }else if(numSectors<=NumDirect){   //Original file just use first indexes, but now we need second indexes
+            int leftDirectSectors = NumDirect-numSectors;
+            for(int i=0;i<leftDirectSectors;i++)
+                dataSectors[numSectors+i]=freeMap->Find();
+            
+            //other sectors need first indexes!
+            int leftSectors = newSectors-leftDirectSectors;
+            for(int i=0;leftSectors>0;i++,leftSectors-=NumFirstDirect){
+                dataSectors[NumDirect+i] = freeMap->Find();
+                //how many indexes will be used(total is 32)
+                int numUse = leftSectors<NumFirstDirect?leftSectors:NumFirstDirect;
+                int *firstIndex = new int[numUse];
+                for(int j=0;j<numUse;j++)
+                    firstIndex[j]=freeMap->Find();
+                
+                //Write back to the sector that contains first indexes
+                synchDisk->WriteSector(dataSectors[NumDirect+i],(char*)firstIndex);
+                delete firstIndex;
+            }
+     }else{ //Original file has already used first indexes!
+        int lastLeftSectors = numSectors-NumDirect;
+        if(lastLeftSectors%NumFirstDirect==0){  //Original file has exactly used up direct indexes in its first indexes
+            int lastFreeFirstIndex = lastLeftSectors/NumFirstDirect + NumDirect;
+            int leftSectors = newSectors;
+            
+            for(int i=0;leftSectors>0;i++,leftSectors-=NumFirstDirect){
+                dataSectors[lastFreeFirstIndex+i] = freeMap->Find();
+                //how many indexes will be used(total is 32)
+                int numUse = leftSectors<NumFirstDirect?leftSectors:NumFirstDirect;
+                int *firstIndex = new int[numUse];
+                for(int j=0;j<numUse;j++)
+                    firstIndex[j]=freeMap->Find();
+                
+                //Write back to the sector that contains first indexes
+                synchDisk->WriteSector(dataSectors[lastFreeFirstIndex+i],(char*)firstIndex);
+                delete firstIndex;
+            }
+        }else{  //There are free direct indexes in the last first index of original file
+            int usedDirectIndex = lastLeftSectors%NumFirstDirect;
+            int lastFreeFirstIndex = lastLeftSectors/NumFirstDirect + NumDirect;
+            int leftSectors = newSectors;
+            //read out the last direct index
+            char *buffer = new char[SectorSize];
+            synchDisk->ReadSector(dataSectors[lastFreeFirstIndex], buffer);
+            int *firstIndex=(int *)buffer;
+            
+            if(newSectors+usedDirectIndex<=NumFirstDirect){  // This first index is enough
+                for(int i=0;i<newSectors;i++)
+                    firstIndex[usedDirectIndex+i]=freeMap->Find();
+                //Write back to the sector that contains first indexes
+                synchDisk->WriteSector(dataSectors[lastFreeFirstIndex],(char*)firstIndex);
+                delete buffer;
+            }else{  //Still need new first index!
+                for(int i=0;usedDirectIndex+i<NumFirstDirect;i++)
+                    firstIndex[usedDirectIndex+i]=freeMap->Find();
+                //Write back to the sector that contains first indexes
+                synchDisk->WriteSector(dataSectors[lastFreeFirstIndex],(char*)firstIndex);
+                delete buffer;
+                
+                leftSectors-=(NumFirstDirect-usedDirectIndex);
+                lastFreeFirstIndex++;
+                 
+                for(int i=0;leftSectors>0;i++,leftSectors-=NumFirstDirect){
+                    dataSectors[lastFreeFirstIndex+i] = freeMap->Find();
+                    //how many indexes will be used(total is 32)
+                    int numUse = leftSectors<NumFirstDirect?leftSectors:NumFirstDirect;
+                    int *firstIndex = new int[numUse];
+                    for(int j=0;j<numUse;j++)
+                        firstIndex[j]=freeMap->Find();
+                
+                    //Write back to the sector that contains first indexes
+                    synchDisk->WriteSector(dataSectors[lastFreeFirstIndex+i],(char*)firstIndex);
+                    delete firstIndex;
+                }
+            }
+        }
+     }
 }

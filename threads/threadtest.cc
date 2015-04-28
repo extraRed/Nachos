@@ -56,8 +56,27 @@ void T(int arg)
         interrupt->OneTick();
         }
 }
+
+//by LMX
+void ThreadDoNothing(int TID)
+{
+}
+
+
 void
 ThreadTest1()
+{
+    DEBUG('t', "Entering ThreadTest1");
+
+    Thread *t = new Thread("forked thread");
+    t->Fork(ThreadDoNothing, t->getTID());
+
+//    SimpleThread(0);
+}
+
+
+void
+ThreadTestTest()
 {
     DEBUG('t', "Entering ThreadTest1");
    Thread *t1=new Thread("Batman");
@@ -65,11 +84,6 @@ ThreadTest1()
    Thread *t2=new Thread("Superman");
    t2->Fork(T,0);
     
-}
-
-//by LMX
-void ThreadDoNothing(int TID)
-{
 }
 
 //by LMX
@@ -277,6 +291,8 @@ ThreadTest()
         //ThreadTestBarrier();
         ThreadTestRWLock();
         break;
+     case 5:
+        ThreadTestTest();
     default:
 	printf("No test specified.\n");
 	break;

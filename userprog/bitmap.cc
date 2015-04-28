@@ -46,7 +46,6 @@ BitMap::~BitMap()
 void
 BitMap::Mark(int which) 
 { 
-    ASSERT(Test(which)==FALSE);
     ASSERT(which >= 0 && which < numBits);
     map[which / BitsInWord] |= 1 << (which % BitsInWord);
 }
@@ -97,12 +96,21 @@ BitMap::Find()
 {
     for (int i = 0; i < numBits; i++)
 	if (!Test(i)) {
-	    //Mark(i);
+	    Mark(i);
 	    return i;
 	}
     return -1;
 }
 
+int 
+BitMap::JustFind() 
+{
+    for (int i = 0; i < numBits; i++)
+	if (!Test(i)) {
+	    return i;
+	}
+    return -1;
+}
 //----------------------------------------------------------------------
 // BitMap::NumClear
 // 	Return the number of clear bits in the bitmap.

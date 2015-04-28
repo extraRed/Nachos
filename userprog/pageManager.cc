@@ -17,7 +17,7 @@ PageManager::~PageManager()
 int 
 PageManager::findPage()
 {
-    int address = manager ->Find();  
+    int address = manager ->JustFind();  
 
      if( address == -1 )      
         return -1;

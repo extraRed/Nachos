@@ -106,6 +106,8 @@ FileSystem::FileSystem(bool format)
 
         DEBUG('f', "Writing headers back to disk.\n");
 	mapHdr->WriteBack(FreeMapSector);    
+
+       dirHdr->Init(TYPE_DIR, -1);
 	dirHdr->WriteBack(DirectorySector);
 
     // OK to open the bitmap and directory files now
@@ -193,7 +195,7 @@ FileSystem::Create(char *name, int initialSize)
         sector = freeMap->Find();	// find a sector to hold the file header
     	if (sector == -1) 		
             success = FALSE;		// no free block for file header 
-        else if (!directory->Add(name, sector))
+      else if (!directory->Add(name, sector))
             success = FALSE;	// no space in directory
 	else {
     	    hdr = new FileHeader;
@@ -201,8 +203,9 @@ FileSystem::Create(char *name, int initialSize)
             	success = FALSE;	// no space on disk for data
 	    else {	
 	    	success = TRUE;
+             hdr->Init(TYPE_FILE, -1);
 		// everthing worked, flush all changes back to disk
-    	    	hdr->WriteBack(sector); 		
+    	    	hdr->WriteBack(sector); 
     	    	directory->WriteBack(directoryFile);
     	    	freeMap->WriteBack(freeMapFile);
 	    }
@@ -233,7 +236,7 @@ FileSystem::Open(char *name)
 
     DEBUG('f', "Opening file %s\n", name);
     directory->FetchFrom(directoryFile);
-    sector = directory->Find(name); 
+    sector = directory->Find(name);
     if (sector >= 0) 		
 	openFile = new OpenFile(sector);	// name was found in directory 
     delete directory;
@@ -287,6 +290,26 @@ FileSystem::Remove(char *name)
     return TRUE;
 } 
 
+//---------------------------------------------------------------------
+//FileSystem::ChangeFileLength
+//    Change the size of a specific file (+/-)
+//    We need to write back the file header after we have changed the file size. 
+//---------------------------------------------------------------------
+
+bool 
+FileSystem::ChangeFileSize(FileHeader *hdr, int newSize)  
+{
+     BitMap *freeMap;
+     freeMap = new BitMap(NumSectors);
+     freeMap ->FetchFrom(freeMapFile);
+
+     bool flag = hdr ->ChangeSize(freeMap, newSize);
+
+     freeMap ->WriteBack(freeMapFile);        // flush to disk
+     delete freeMap;
+
+     return flag;
+}
 //----------------------------------------------------------------------
 // FileSystem::List
 // 	List all the files in the file system directory.

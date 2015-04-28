@@ -67,7 +67,7 @@ Semaphore::P()
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
     
     while (value == 0) { 			// semaphore not available
-        printf("%s go to sleep\n",currentThread->getName());
+        //printf("%s go to sleep\n",currentThread->getName());
         queue->Append((void *)currentThread);	// so go to sleep
         currentThread->Sleep();
     } 
@@ -92,7 +92,6 @@ Semaphore::V()
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
     thread = (Thread *)queue->Remove();     // disable interrupts
     if (thread != NULL){	                            // make thread ready, consuming the V immediately
-        printf("blocked name:%s\n",thread->getName());
         if(thread->getStatusValue()==BLOCKED)
             scheduler->ReadyToRun(thread);
 #ifdef USER_PROGRAM

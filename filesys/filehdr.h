@@ -17,8 +17,16 @@
 #include "disk.h"
 #include "bitmap.h"
 
-#define NumDirect 	((SectorSize - 2 * sizeof(int)) / sizeof(int))
-#define MaxFileSize 	(NumDirect * SectorSize)
+
+#define SecondDirect 5
+#define NumDirect 	((SectorSize - 7 * sizeof(int) - SecondDirect * sizeof(int)) / sizeof(int))
+#define NumFirstDirect (SectorSize/sizeof(int))    //each second index can have 32 first indexes
+#define TotalDirect (NumDirect+SecondDirect*NumFirstDirect)
+#define TotalEntry (NumDirect+SecondDirect)
+#define MaxFileSize 	(TotalDirect * SectorSize)
+
+#define TYPE_FILE 0
+#define TYPE_DIR 1
 
 // The following class defines the Nachos "file header" (in UNIX terms,  
 // the "i-node"), describing where on disk to find all of the data in the file.
@@ -55,12 +63,27 @@ class FileHeader {
 					// in bytes
 
     void Print();			// Print the contents of the file.
+    //by LMX
+    void Init(int type, int path);
+    void setAccessTime(int time){accessTime = time;}
+    void setModifyTime(int time){modifyTime = time;}
+    bool ChangeSize(BitMap * freeMap, int newSize);
+    void IncreaseFile(BitMap * freeMap, int newSectors);
 
   private:
     int numBytes;			// Number of bytes in the file
     int numSectors;			// Number of data sectors in the file
-    int dataSectors[NumDirect];		// Disk sector numbers for each data 
+    //int dataSectors[NumDirect];		// Disk sector numbers for each data 
 					// block in the file
+    int dataSectors[TotalEntry];
+
+    //by LMX
+    int type;                             // 0 is for file, 1 is for directory
+
+    int createTime;
+    int accessTime;
+    int modifyTime;                         
+    int path;                             //sector of the father header file
 };
 
 #endif // FILEHDR_H
