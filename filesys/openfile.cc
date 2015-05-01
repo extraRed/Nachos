@@ -210,3 +210,15 @@ OpenFile::Length()
 { 
     return hdr->FileLength(); 
 }
+
+int 
+OpenFile::FileType()
+{
+    return hdr->getType();
+}
+
+int 
+OpenFile::FilePath()
+{
+    return hdr->getPath();
+}

@@ -74,13 +74,19 @@ class FileSystem {
 					// the disk, so initialize the directory
     					// and the bitmap of free blocks.
 
-    bool Create(char *name, int initialSize);  	
+    bool Create(char *name, int initialSize, char *path=NULL);  	
 					// Create a file (UNIX creat)
+    //by LMX
+    bool CreateDirectory(char *name, char *path = NULL);   // Create a directory
 
     OpenFile* Open(char *name); 	// Open a file (UNIX open)
 
-    bool Remove(char *name);  		// Delete a file (UNIX unlink)
-
+    bool Remove(char *name, char *path=NULL);  		// Delete a file (UNIX unlink)
+    //by LMX
+    bool RemoveDirectory(char *name, char *path=NULL);       // recursively remove a directory
+    //by LMX
+    int FindFile(const char * strpath);
+    
     void List();			// List all the files in the file system
 
     void Print();			// List all the files and their contents

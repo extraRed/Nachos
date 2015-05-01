@@ -50,6 +50,7 @@
 #include "directory.h"
 #include "filehdr.h"
 #include "filesys.h"
+#include "system.h"
 
 // Sectors containing the file headers for the bitmap of free sectors,
 // and the directory of files.  These file headers are placed in well-known 
@@ -63,6 +64,51 @@
 #define FreeMapFileSize 	(NumSectors / BitsInByte)
 #define NumDirEntries 		10
 #define DirectoryFileSize 	(sizeof(DirectoryEntry) * NumDirEntries)
+
+
+//-----------------------------------------------------------------
+//RecursiveDelete
+//  Helper function for deleting a directory
+//-----------------------------------------------------------------
+
+void RecursiveDelete(char *path)
+{
+    char buffer[0x100];
+    int sector = fileSystem ->FindFile(path);
+    
+    ASSERT(sector != -1);
+
+    OpenFile *dirFile = new OpenFile(sector);
+    Directory *directory = new Directory(NumDirEntries);
+    directory ->FetchFrom(dirFile);
+
+    for(int i = 2; i < NumDirEntries; i++)
+    {
+        int old_sector = directory ->getSectorbyIndex(i);     //the head sector of the correspond file.
+        if(old_sector == -1)
+           continue;
+
+        char *filename = directory ->getNamebyIndex(i);
+        ASSERT(filename != NULL);
+
+        FileHeader *hdr = new FileHeader;
+        hdr ->FetchFrom(old_sector);
+
+        if(hdr->getType()== TYPE_FILE)  //Just a file, delete it directly
+            fileSystem ->Remove(filename, path);
+        else{                   //A directory, need to delete all files under it, use recursion
+            strncpy(buffer, path, 0x100);
+            strcat(buffer, "/");
+            strcat(buffer, filename);
+            RecursiveDelete(buffer);    //first delete this son directory
+            fileSystem ->Remove(filename, path);    //then delete current directory
+        }
+
+        delete hdr;
+    }
+    delete dirFile;
+    delete directory;
+}
 
 //----------------------------------------------------------------------
 // FileSystem::FileSystem
@@ -116,6 +162,12 @@ FileSystem::FileSystem(bool format)
 
         freeMapFile = new OpenFile(FreeMapSector);
         directoryFile = new OpenFile(DirectorySector);
+
+    //by LMX
+    // Here we add two directory entry for the root directory. the ".", ".."
+
+        directory ->Add(".", DirectorySector);
+        directory ->Add("..", DirectorySector);
      
     // Once we have the files "open", we can write the initial version
     // of each file back to disk.  The directory at this point is completely
@@ -142,6 +194,87 @@ FileSystem::FileSystem(bool format)
         freeMapFile = new OpenFile(FreeMapSector);
         directoryFile = new OpenFile(DirectorySector);
     }
+}
+
+//---------------------------------------------------------------------
+//FileSystem::FindFile(char *path)
+//       Give a path, find the file header sector of that path
+//---------------------------------------------------------------------
+
+int
+FileSystem::FindFile(const char *strpath)
+{
+    OpenFile *dirFile;
+    Directory *directory;
+    int sector;
+    char *tokenPtr, path[0x100];
+ 
+    if(strpath == NULL)
+       return -1;
+
+    strncpy(path, strpath, 0x100);
+    if(path[0] == '/'){      // root directory
+        dirFile = new OpenFile(DirectorySector);   // we don't need write back, since we will not change it.
+        directory = new Directory(NumDirEntries);
+        directory ->FetchFrom(dirFile);
+        
+        sector = DirectorySector;  // the root directory sector
+
+        tokenPtr = strtok(path, "/");
+        while(tokenPtr != NULL){
+             delete dirFile;     
+             //printf("%s\n",tokenPtr);
+             sector = directory ->Find(tokenPtr);   //find in the current directory
+             if(sector == -1){
+                printf("Failed to find the directory/file %s in current directory\n", tokenPtr);
+                return -1;
+             }
+
+             tokenPtr = strtok(NULL, "/"); 
+             dirFile = new OpenFile(sector);
+             
+             if(tokenPtr != NULL){
+                 if(dirFile ->FileType() == TYPE_FILE){   //this is a file, not a directory
+                      printf("Current file is a file type, not a directory type!\n");
+                      return -1;
+                 }
+                 directory ->FetchFrom(dirFile);    //move to current directory
+             }
+        }
+        delete dirFile;
+        delete directory;
+
+        return sector;  
+    } else{                    // relative address
+        sector = directoryFile->FileSector();
+        dirFile = new OpenFile(sector);   //the current directory
+
+        directory = new Directory(NumDirEntries);
+        directory ->FetchFrom(dirFile);
+
+        tokenPtr = strtok(path, "/");
+        while(tokenPtr != NULL){
+             delete dirFile;
+             
+             sector = directory ->Find(tokenPtr);
+             if(sector == -1)
+                return -1;
+
+             tokenPtr = strtok(NULL, "/"); 
+             dirFile = new OpenFile(sector);
+             
+             if(tokenPtr != NULL){
+                 if(dirFile ->FileType() == TYPE_FILE)   //this is a file, not a directory
+                      return -1;
+
+                 directory ->FetchFrom(dirFile);
+             }
+        }
+        delete dirFile;
+        delete directory;
+
+        return sector; 
+    } 
 }
 
 //----------------------------------------------------------------------
@@ -174,18 +307,28 @@ FileSystem::FileSystem(bool format)
 //----------------------------------------------------------------------
 
 bool
-FileSystem::Create(char *name, int initialSize)
+FileSystem::Create(char *name, int initialSize, char *path)
 {
     Directory *directory;
     BitMap *freeMap;
     FileHeader *hdr;
     int sector;
     bool success;
-
+    OpenFile *dirFile = NULL;
+    
     DEBUG('f', "Creating file %s, size %d\n", name, initialSize);
 
     directory = new Directory(NumDirEntries);
-    directory->FetchFrom(directoryFile);
+    if(path == NULL)
+        directory->FetchFrom(directoryFile);
+    else{
+        sector = this -> FindFile(path);
+        if(sector == -1)
+            return FALSE;
+
+        dirFile = new OpenFile(sector);
+        directory ->FetchFrom(dirFile);
+    }   
 
     if (directory->Find(name) != -1)
       success = FALSE;			// file is already in directory
@@ -206,8 +349,13 @@ FileSystem::Create(char *name, int initialSize)
              hdr->Init(TYPE_FILE, -1);
 		// everthing worked, flush all changes back to disk
     	    	hdr->WriteBack(sector); 
-    	    	directory->WriteBack(directoryFile);
     	    	freeMap->WriteBack(freeMapFile);
+              if(path == NULL)
+                    directory ->WriteBack(directoryFile);        // flush to disk
+              else {
+                    directory ->WriteBack(dirFile);
+                    delete dirFile;
+              }
 	    }
             delete hdr;
 	}
@@ -216,6 +364,85 @@ FileSystem::Create(char *name, int initialSize)
     delete directory;
     return success;
 }
+
+//----------------------------------------------------------------------
+// FileSystem::CreateDirectory
+// 	Create a directory in the Nachos file system.
+//      The initial size of the directory is two, "." and ".." 
+//----------------------------------------------------------------------
+
+bool
+FileSystem::CreateDirectory(char *name, char *path)
+{
+    Directory *directory;
+    BitMap *freeMap;
+    FileHeader *hdr;
+    int sector;
+    bool success;
+    OpenFile *dirFile;
+
+    DEBUG('f', "Creating file %s, size %d\n", name, DirectoryFileSize);
+
+    directory = new Directory(NumDirEntries);
+    
+     if(path == NULL)    
+        directory->FetchFrom(directoryFile);
+    else{
+        sector = FindFile(path);
+        if(sector == -1)
+            return FALSE;
+
+        dirFile = new OpenFile(sector);
+        directory ->FetchFrom(dirFile);
+    } 
+
+    if (directory->Find(name) != -1)
+      success = FALSE;			// file is already in directory
+    else {	
+        freeMap = new BitMap(NumSectors);
+        freeMap->FetchFrom(freeMapFile);
+        sector = freeMap->Find();	// find a sector to hold the file header
+    	  if (sector == -1) 		
+             success = FALSE;		// no free block for file header 
+        else if (!directory->Add(name, sector))
+             success = FALSE;	// no space in directory
+	  else {
+    	      hdr = new FileHeader;
+	      if (!hdr->Allocate(freeMap, DirectoryFileSize))
+            	    success = FALSE;	// no space on disk for data
+	      else {	
+	    	    success = TRUE;
+                  hdr ->Init(TYPE_DIR, directoryFile ->FileSector());   
+                  hdr ->WriteBack(sector);
+                  
+                  OpenFile  *newdirfile = new OpenFile(sector);
+                  Directory *newdir = new Directory(NumDirEntries);
+
+                  //Create the initial two entries of a directory
+                   newdir ->Add(".", sector);
+                   newdir ->Add("..", directoryFile ->FileSector() );
+         
+                   newdir ->WriteBack(newdirfile);
+
+                   delete newdirfile;
+                   delete newdir;
+           
+    	    	      freeMap->WriteBack(freeMapFile);
+                    if(path == NULL)
+                        directory ->WriteBack(directoryFile);        // flush to disk
+                    else{
+                        directory ->WriteBack(dirFile);
+                        delete dirFile;
+                    }      
+               }
+               delete hdr;
+        }
+        delete freeMap;
+        }
+    delete directory;
+    return success;
+}
+
 
 //----------------------------------------------------------------------
 // FileSystem::Open
@@ -258,15 +485,26 @@ FileSystem::Open(char *name)
 //----------------------------------------------------------------------
 
 bool
-FileSystem::Remove(char *name)
+FileSystem::Remove(char *name, char *path)
 { 
     Directory *directory;
     BitMap *freeMap;
     FileHeader *fileHdr;
     int sector;
-    
+    OpenFile *dirFile = NULL;
     directory = new Directory(NumDirEntries);
-    directory->FetchFrom(directoryFile);
+    
+    if(path == NULL)
+        directory->FetchFrom(directoryFile);
+    else{
+        sector = FindFile(path);
+        if(sector == -1)
+            return FALSE;
+
+        dirFile = new OpenFile(sector);
+        directory->FetchFrom(dirFile);
+    }
+         
     sector = directory->Find(name);
     if (sector == -1) {
        delete directory;
@@ -283,15 +521,42 @@ FileSystem::Remove(char *name)
     directory->Remove(name);
 
     freeMap->WriteBack(freeMapFile);		// flush to disk
-    directory->WriteBack(directoryFile);        // flush to disk
+    
+    if(path != NULL){
+        directory ->WriteBack(dirFile);
+        delete dirFile;
+    }else
+        directory->WriteBack(directoryFile);        // flush to disk
+        
     delete fileHdr;
     delete directory;
     delete freeMap;
     return TRUE;
 } 
 
+//-----------------------------------------------------------------------
+//FileSystem::RemoveDirectory
+//    Remove the directory and all the files in it
+//      "path", the directory to be removed
+//-----------------------------------------------------------------------
+bool
+FileSystem::RemoveDirectory(char *name, char *path)
+{
+    char dir_path[0x100];
+    strcpy(dir_path,path);
+    strcat(dir_path,"/");
+    strcat(dir_path,name);
+    int sector = FindFile(dir_path);
+    FileHeader *hdr = new FileHeader;
+    hdr ->FetchFrom(sector);
+    ASSERT(hdr ->getType() == TYPE_DIR);    //Must be a directory
+    RecursiveDelete(dir_path);
+    Remove(name, path);
+    return TRUE;
+}
+
 //---------------------------------------------------------------------
-//FileSystem::ChangeFileLength
+//FileSystem::ChangeFileSize
 //    Change the size of a specific file (+/-)
 //    We need to write back the file header after we have changed the file size. 
 //---------------------------------------------------------------------
@@ -310,6 +575,7 @@ FileSystem::ChangeFileSize(FileHeader *hdr, int newSize)
 
      return flag;
 }
+
 //----------------------------------------------------------------------
 // FileSystem::List
 // 	List all the files in the file system directory.

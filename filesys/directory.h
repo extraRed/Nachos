@@ -21,6 +21,7 @@
 
 #define FileNameMaxLen 		9	// for simplicity, we assume 
 					// file names are <= 9 characters long
+#define NumDirEntries 10
 
 // The following class defines a "directory entry", representing a file
 // in the directory.  Each entry gives the name of the file, and where
@@ -71,6 +72,10 @@ class Directory {
     void Print();			// Verbose print of the contents
 					//  of the directory -- all the file
 					//  names and their contents.
+    //by LMX
+    char* getNamebyIndex(int i);
+    int getSectorbyIndex(int i);
+    void setSectorebyIndex(int i, int s);
 
   private:
     int tableSize;			// Number of directory entries

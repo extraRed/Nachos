@@ -69,6 +69,9 @@ class FileHeader {
     void setModifyTime(int time){modifyTime = time;}
     bool ChangeSize(BitMap * freeMap, int newSize);
     void IncreaseFile(BitMap * freeMap, int newSectors);
+    int getType(){return type;}
+    int getPath(){return path;}
+    void setPath(int p){path=p;}
 
   private:
     int numBytes;			// Number of bytes in the file

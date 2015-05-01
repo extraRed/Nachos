@@ -174,7 +174,8 @@ void
 PerformanceTest()
 {
     printf("Starting file system performance test:\n");
-    //stats->Print();
+    /*
+    stats->Print();
     FileWrite();
     FileRead();
     fileSystem->Print();
@@ -182,6 +183,15 @@ PerformanceTest()
       printf("Perf test: unable to remove %s\n", FileName);
       return;
     }
-    //stats->Print();
+    stats->Print();
+    */
+    fileSystem->CreateDirectory("LMX");
+    fileSystem->CreateDirectory("OS", "/LMX");
+    fileSystem->CreateDirectory("Nachos", "/LMX/OS");
+    fileSystem->Create("Lab4", 1000, "/LMX/OS/Nachos");
+    fileSystem->Create("Lab5", 1000, "/LMX/OS/Nachos");
+    fileSystem->Print();
+    fileSystem->RemoveDirectory("OS", "/LMX");
+    fileSystem->Print();
 }
 

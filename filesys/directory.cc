@@ -90,11 +90,15 @@ Directory::WriteBack(OpenFile *file)
 int
 Directory::FindIndex(char *name)
 {
-    for (int i = 0; i < tableSize; i++)
-        if(table[i].inUse==TRUE)
+    //printf("%s\n",name);
+    for (int i = 0; i < tableSize; i++){
+        //if(table[i].inUse==TRUE)
+        //    printf("i: %d, name: %s\n",i,table[i].name);
         //if (table[i].inUse && !strncmp(table[i].name, name, FileNameMaxLen))
-         if (table[i].inUse && table[i].name==name)
+         if (table[i].inUse && strcmp(table[i].name,name)==0){
 	    return i;
+         }
+    }
     return -1;		// name not in directory
 }
 
@@ -188,14 +192,47 @@ void
 Directory::Print()
 { 
     FileHeader *hdr = new FileHeader;
-
+    OpenFile *dirFile = NULL;
+    Directory *sonDir = NULL;
     printf("Directory contents:\n");
     for (int i = 0; i < tableSize; i++)
 	if (table[i].inUse) {
 	    printf("Name: %s, Sector: %d\n", table[i].name, table[i].sector);
 	    hdr->FetchFrom(table[i].sector);
 	    hdr->Print();
+           if (i>=2 && hdr->getType()==TYPE_DIR){
+                printf("Showing content in directory %s\n",table[i].name);
+                dirFile = new OpenFile(table[i].sector);
+                sonDir = new Directory(NumDirEntries);
+                sonDir ->FetchFrom(dirFile);
+                sonDir ->Print();
+                delete sonDir;
+           }
 	}
     printf("\n");
     delete hdr;
+}
+
+//by LMX
+char* 
+Directory::getNamebyIndex(int i)
+{
+    if(table[i].inUse==TRUE)
+        return table[i].name;
+    return NULL;
+}
+
+int 
+Directory::getSectorbyIndex(int i)
+{
+    if(table[i].inUse==TRUE)
+        return table[i].sector;
+    return -1;
+}
+
+void
+Directory::setSectorebyIndex(int i, int s)
+{
+     if(table[i].inUse==TRUE)
+        table[i].sector = s;
 }

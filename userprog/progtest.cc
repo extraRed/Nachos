@@ -13,6 +13,7 @@
 #include "console.h"
 #include "addrspace.h"
 #include "synch.h"
+#include "synchConsole.h"
 
 void Test(int which)
 {
@@ -114,7 +115,7 @@ void
 ConsoleTest (char *in, char *out)
 {
     char ch;
-
+/*
     console = new Console(in, out, ReadAvail, WriteDone, 0);
     readAvail = new Semaphore("read avail", 0);
     writeDone = new Semaphore("write done", 0);
@@ -125,5 +126,12 @@ ConsoleTest (char *in, char *out)
 	console->PutChar(ch);	// echo it!
 	writeDone->P() ;        // wait for write to finish
 	if (ch == 'q') return;  // if q, quit
+    }
+*/
+    SynchConsole *synchConsole = new SynchConsole(in,out);
+    for(;;){
+        ch = synchConsole->GetChar();
+        synchConsole->PutChar(ch);
+        if(ch == 'q') return;
     }
 }
