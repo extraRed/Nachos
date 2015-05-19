@@ -126,7 +126,7 @@ void Fork(void (*func)());
  */
 void Yield();		
 
-void Print(int arg);
+void Print(char* arg,int choice);
 
 #endif /* IN_ASM */
 

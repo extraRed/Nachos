@@ -28,6 +28,9 @@ FileSystem  *fileSystem;
 
 #ifdef FILESYS
 SynchDisk   *synchDisk;
+//by LMX
+FileManager *fileManager;
+FileCache *fileCache;
 #endif
 
 #ifdef USER_PROGRAM	// requires either FILESYS or FILESYS_STUB
@@ -167,6 +170,8 @@ Initialize(int argc, char **argv)
 
 #ifdef FILESYS
     synchDisk = new SynchDisk("DISK");
+    fileManager = new FileManager;
+    fileCache = new FileCache;
 #endif
 
 #ifdef FILESYS_NEEDED

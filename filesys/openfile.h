@@ -76,10 +76,10 @@ class OpenFile {
 					// and increment position in file.
     int Write(char *from, int numBytes);
 
-    int ReadAt(char *into, int numBytes, int position);
+    int ReadAt(char *into, int numBytes, int position, bool ifCache=FALSE);
     					// Read/write bytes from the file,
 					// bypassing the implicit position.
-    int WriteAt(char *from, int numBytes, int position);
+    int WriteAt(char *from, int numBytes, int position, bool ifCache=FALSE);
 
     int Length(); 			// Return the number of bytes in the
 					// file (this interface is simpler 
@@ -89,6 +89,7 @@ class OpenFile {
     int FileSector(){return headSector;}
     int FileType();
     int FilePath();
+    int GetFileDescriptor(){return headSector;}
     
   private:
     FileHeader *hdr;			// Header for this file 

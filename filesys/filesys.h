@@ -92,7 +92,7 @@ class FileSystem {
     void Print();			// List all the files and their contents
     //by LMX
     bool ChangeFileSize(FileHeader *hdr, int newSize);    //Dynamically change the size of a file
-
+    bool Copy(char * src, char * dst, int size);
   private:
    OpenFile* freeMapFile;		// Bit map of free disk blocks,
 					// represented as a file

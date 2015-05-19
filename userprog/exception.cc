@@ -24,6 +24,9 @@
 #include "copyright.h"
 #include "system.h"
 #include "syscall.h"
+#include "openfile.h"
+#include "thread.h"
+#include "directory.h"
 
 //----------------------------------------------------------------------
 // ExceptionHandler
@@ -47,7 +50,39 @@
 //	"which" is the kind of exception.  The list of possible exceptions 
 //	are in machine.h.
 //----------------------------------------------------------------------
+void 
+getStringFromMem(int baseAddr, char *name)
+{
+    int value = -1;
+    int size = 0;
+    while(value != 0) {
+        machine->ReadMem(baseAddr + size, 1,&value);
+        size++;
+    }
+    name[--size] = '\0';
+    int counter = 0;
+    while(size--) {
+    	    machine->ReadMem(baseAddr++,1,&value);
+	    name[counter++] = (char)value;
+    }
+}
 
+void threadExec(int arg)
+{
+    printf("In thread exec\n");
+    currentThread->RestoreUserState();
+    currentThread->space->RestoreState();
+    machine->Run();
+}
+
+void threadFork(int arg)
+{
+    printf("In thread fork\n");
+    currentThread->RestoreUserState();
+    currentThread->space->RestoreState();
+    machine->Run();
+}
+    
 void
 ExceptionHandler(ExceptionType which)
 {
@@ -56,13 +91,155 @@ ExceptionHandler(ExceptionType which)
     if ((which == SyscallException) && (type == SC_Halt)) {
 	DEBUG('a', "Shutdown, initiated by user program.\n");
    	interrupt->Halt();
+    }else if((which == SyscallException) && (type == SC_Create)){
+        int baseAddr = machine->ReadRegister(4);
+        char name[FileNameMaxLen+1];
+        getStringFromMem(baseAddr,name);
+        bool create_res=fileSystem->Create(name,0);
+        if(!create_res)
+		printf("Create file failed.\n");
+    }else if((which == SyscallException) && (type == SC_Open)){
+       int baseAddr = machine->ReadRegister(4);
+	char name[FileNameMaxLen+1];
+       getStringFromMem(baseAddr,name);
+       
+	OpenFile* file = fileSystem->Open(name);
+	OpenFileId fid = file->GetFileDescriptor();
+       printf("OpenFileId is %d\n", fid);
+       machine->WriteRegister(2,fid);
+
+       //fileManager->Append(file->FileSector());
+    }else if((which == SyscallException) && (type == SC_Close)){
+       int fd = machine->ReadRegister(4);
+	OpenFile* file = new OpenFile(fd);
+	//fileManager->Remove(file->FileSector());
+       delete file;
+    }else if ((which == SyscallException) && (type == SC_Write)) {
+	int fd = machine->ReadRegister(6);
+	int size = machine->ReadRegister(5);
+	int baseAddr = machine->ReadRegister(4);
+
+	char* buffer = new char[size];
+	int i = 0;
+	while(i < size) {
+		machine->ReadMem(baseAddr + i, 1,(int *)&buffer[i]);
+		i++;
+	}
+       if (fd==ConsoleOutput){
+            for(int i=0;i<size;i++)
+                printf("%c",buffer[i]);
+       }else{
+	    OpenFile* file = new OpenFile(fd);
+	    int realSize = file->Write(buffer,size);
+	    if(realSize != size) {
+		    printf("Only wrote %d bytes of size.\n",realSize,size);
+	    }
+        }
+	delete buffer;
+    } else if ((which == SyscallException) && (type == SC_Read)) {
+	DEBUG('a', "Read a file.\n");
+	int fd = machine->ReadRegister(6);
+	int size = machine->ReadRegister(5);
+	int baseAddr = machine->ReadRegister(4);
+	char* buffer = new char[size];
+       int realSize = 0;
+       
+       if (fd==ConsoleInput){
+            for(int i=0;i<size;i++)
+                scanf("%c",&buffer[i]);
+            realSize = size;
+       }else{
+	    OpenFile* file = new OpenFile(fd);
+	    realSize = file->Read(buffer,size);
+    	    if(realSize != size) {
+		printf("Exception: Only wrote %d bytes of size.\n",realSize,size);
+	    }
+       }
+       int i = 0;
+	while(i < size) {
+		machine->WriteMem(baseAddr + i, 1,(int)buffer);
+		i++;
+	}
+       printf("Read: %s\n",buffer);
+       machine->WriteRegister(2, realSize);
+	delete buffer;
+    }else if ((which == SyscallException) && (type == SC_Exec)) {
+       int baseAddr = machine->ReadRegister(4);
+	char name[FileNameMaxLen+1];
+       getStringFromMem(baseAddr,name);
+
+       OpenFile *executable = fileSystem->Open(name);
+       if (executable == NULL) {
+            printf("Unable to open file %s\n", name);
+            machine->WriteRegister(2, -1);
+            return;
+      }
+
+       Thread * t = new Thread("ExecThread");
+       
+       AddrSpace * space = new AddrSpace(executable); 
+       char *tempfile=new char[FileNameMaxLen+1];
+       char tid[3];
+       sprintf(tid,"%d",t->getTID());
+       int filesize = (space ->getPageNum()) * PageSize ;
+       strcpy(tempfile,name);
+       strcat(tempfile,tid);
+       //printf("name:%s\n",tempfile);
+        space->CreateTempFile(executable, tempfile, filesize);
+
+       t->space = space;
+       t->space->setFileName(tempfile);
+       t->InitUserReg();
+       delete executable;
+       machine->WriteRegister(2, t->getTID());
+       t->Fork(threadExec,0);
+    }else if ((which == SyscallException) && (type == SC_Fork)) {
+        Thread * t = new Thread("ForkThread");
+        AddrSpace *space = new AddrSpace(t->getTID(), currentThread->space);
+        t->space = space;
+        int forkFunc = (int) machine->ReadRegister(4);
+        // Copy machine registers of current thread to new thread
+        t->SaveUserState(); 
+        t->SetUserRegister(PCReg, forkFunc);
+        t->SetUserRegister(NextPCReg, forkFunc + 4);
+        t->Fork(threadFork,0);
+    }else if ((which == SyscallException) && (type == SC_Join)) {
+        int tid = machine->ReadRegister(4);
+        printf("Thread %s need to wait until Thread with tid %d finishes\n",currentThread->getName(),tid);
+        currentThread->addToJoinTable(tid);
+        IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
+        currentThread->Sleep();
+        (void) interrupt->SetLevel(oldLevel);	// re-enable interrupts
+    }else if ((which == SyscallException) && (type == SC_Yield)) {
+        currentThread->Yield();
     }else if((which == SyscallException) && (type == SC_Exit)){
         int exitCode = machine->ReadRegister(4);
         printf("Thread %s exit with code %d\n",currentThread->getName(),exitCode);
         currentThread->Finish();
     }else if((which == SyscallException) && (type == SC_Print)){
         int arg = machine->ReadRegister(4);
-        printf("number: %d\n",arg);
+        int choice = machine->ReadRegister(5);
+        if(choice==0){
+            printf("%d",arg);
+        }else if(choice==1){
+            printf("%c",char(arg));
+        }else{
+            int value = -1;
+            char *content;
+            int size = 0;
+            while(value != 0) {
+                machine->ReadMem(arg + size, 1,&value);
+                size++;
+            }
+            content = new char[size];
+            content[--size] = '\0';
+            int counter = 0;
+            while(size--) {
+		    machine->ReadMem(arg++,1,&value);
+		    content[counter++] = (char)value;
+            }
+            printf("%s",content);
+        }
     }else if(which ==TLBMissException){
         (stats->numTLBMisses) ++;
         int address=machine->registers[BadVAddrReg];

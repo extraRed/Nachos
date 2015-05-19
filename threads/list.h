@@ -45,8 +45,8 @@ class List {
     List();			// initialize the list
     ~List();			// de-allocate the list
 
-    void Prepend(void *item); 	// Put item at the beginning of the list
-    void Append(void *item); 	// Put item at the end of the list
+    void Prepend(void *item, int sortKey=0); 	// Put item at the beginning of the list
+    void Append(void *item, int sortKey=0); 	// Put item at the end of the list
     void *Remove(); 	 	// Take item off the front of the list
 
     void Mapcar(VoidFunctionPtr func);	// Apply "func" to every element 
@@ -57,6 +57,9 @@ class List {
     // Routines to put/get items on/off list in order (sorted by key)
     void SortedInsert(void *item, int sortKey);	// Put item into list
     void *SortedRemove(int *keyPtr); 	  	// Remove first item from list
+
+    //by LMX
+    void *RemoveByKey(int sortKey);
 
   private:
     ListElement *first;  	// Head of the list, NULL if list is empty

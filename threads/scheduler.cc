@@ -88,7 +88,6 @@ void
 Scheduler::ReadyToRun (Thread *thread)
 {
     DEBUG('t', "Putting thread %s on ready list.\n", thread->getName());
-
     thread->setStatus(READY);
     readyList->Append((void *)thread);
     //readyList->SortedInsert((void *)thread, thread->getPriority());
@@ -193,14 +192,14 @@ Scheduler::Run (Thread *nextThread)
     
     DEBUG('t', "Switching from thread \"%s\" to thread \"%s\"\n",
 	  oldThread->getName(), nextThread->getName());
-    
+
     // This is a machine-dependent assembly language routine defined 
     // in switch.s.  You may have to think
     // a bit to figure out what happens after this, both from the point
     // of view of the thread and from the perspective of the "outside world".
 
     SWITCH(oldThread, nextThread);
-    
+
     DEBUG('t', "Now in thread \"%s\"\n", currentThread->getName());
 
     // If the old thread gave up the processor because it was finishing,

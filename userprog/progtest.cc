@@ -55,10 +55,10 @@ StartProcess(char *filename)
     currentThread->space->setFileName(tempfile);
   
     delete executable;			// close file
-
+    
     space->InitRegisters();		// set the initial register values
     space->RestoreState();		// load page table register
-    
+    /*
     OpenFile *executable2 = fileSystem->Open("../test/sort");
     AddrSpace *space2;
 
@@ -83,7 +83,7 @@ StartProcess(char *filename)
     thread->InitUserReg();
     thread->Fork(Test, 0);
     delete executable2;			// close file
-    
+    */
     machine->Run();			// jump to the user progam
     ASSERT(FALSE);			// machine->Run never returns;
 					// the address space exits

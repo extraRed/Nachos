@@ -109,6 +109,7 @@ AddrSpace::AddrSpace(OpenFile *executable)
 	pageTable[i].readOnly = FALSE;  // if the code segment was entirely on 
 					// a separate page, we could set its 
 					// pages to be read-only
+	 pageTable[i].lastAccessTime = 0;
     }
     //printf("%d physical pages left\n",pageManager->numClean());
     
@@ -158,6 +159,43 @@ AddrSpace::AddrSpace(OpenFile *executable)
     */
 }
 
+AddrSpace::AddrSpace(int _tid, void* _fatherSpace){
+    AddrSpace* fatherSpace =(AddrSpace*) _fatherSpace;
+    numPages = fatherSpace->numPages;
+    pageTable = new TranslationEntry[numPages];                    
+    availNumPages = NumPhysPages/4;
+    for (int i = 0; i < numPages; i++) {
+        pageTable[i].virtualPage = i;   
+        pageTable[i].physicalPage = -1; 
+        pageTable[i].valid = FALSE;    
+        pageTable[i].use = FALSE;            
+        pageTable[i].dirty = FALSE;
+        pageTable[i].readOnly = FALSE; 
+        pageTable[i].lastAccessTime = 0;
+    }
+
+    filename=new char[10];//[FileNameMaxLen+1];
+    char tid[3];
+    sprintf(tid,"%d",_tid);    
+    strcpy(filename,fatherSpace->filename);
+    strcat(filename,"_");
+    strcat(filename,tid);
+    
+    printf("forked filename: %s\n",filename);
+    //Create the swap file and copy it from its father
+    fileSystem->Create(filename, numPages * PageSize);
+    fileSystem->Copy(fatherSpace->filename, filename, numPages * PageSize);
+
+    OpenFile * fileHandler = fileSystem->Open(filename);
+    //write back dirty pages of the father
+    for (int vpn = 0; vpn < numPages; vpn++){
+        if (fatherSpace->pageTable[vpn].dirty==TRUE){
+            int fatherppn = fatherSpace->pageTable[vpn].physicalPage;
+            fileHandler->WriteAt(&(machine->mainMemory[fatherppn * PageSize]), PageSize, vpn * PageSize);
+        }
+    }
+    delete fileHandler;
+}
 //----------------------------------------------------------------------
 // AddrSpace::~AddrSpace
 // 	Dealloate an address space.  Nothing for now!
@@ -166,6 +204,7 @@ AddrSpace::AddrSpace(OpenFile *executable)
 AddrSpace::~AddrSpace()
 {
    //by LMX
+   //fileSystem->Remove(filename);
    for(int i = 0;i < numPages;i++)
         if(pageTable[i].valid==TRUE)
             pageManager->cleanPage(pageTable[i].physicalPage);
@@ -230,11 +269,13 @@ AddrSpace::SaveState()
 void 
 AddrSpace::RestoreState() 
 {
-    printf("Change Pagetable to %s\n", currentThread->getName());
+    //printf("Change Pagetable to %s\n", currentThread->getName());
     machine->pageTable = pageTable;
     machine->pageTableSize = numPages;
-    for (int i = 0; i < TLBSize; i++)
-	machine->tlb[i].valid = FALSE;
+    if(machine->tlb!=NULL){
+        for (int i = 0; i < TLBSize; i++)
+	    machine->tlb[i].valid = FALSE;
+    }
 }
 
 

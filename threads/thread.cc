@@ -123,14 +123,17 @@ Thread::Fork(VoidFunctionPtr func, int arg)
     StackAllocate(func, arg);
 
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
+
     scheduler->ReadyToRun(this);	// ReadyToRun assumes that interrupts 
 					// are disabled!
     //by LMX
     (void) interrupt->SetLevel(oldLevel);
 
     //by LMX
+    /*
     if(this->getPriority()<currentThread->getPriority())
         currentThread->Yield();
+    */
 }    
 
 //----------------------------------------------------------------------
@@ -184,6 +187,8 @@ Thread::Finish ()
     DEBUG('t', "Finishing thread \"%s\"\n", getName());
     
     threadToBeDestroyed = currentThread;
+   
+    awakeJoinThreads(TID);         //awake all the threads waiting for it
     Sleep();					// invokes SWITCH
     // not reached
 }
@@ -217,6 +222,7 @@ Thread::Yield ()
     DEBUG('t', "Yielding thread \"%s\"\n", getName());
     
     nextThread = scheduler->FindNextToRun();
+
     //by LMX
     /*if (nextThread != NULL) {
         //if next thread has higher priority, then run next thread
@@ -232,6 +238,7 @@ Thread::Yield ()
     if (nextThread != NULL) {
         scheduler->ReadyToRun(this);//add current thread to the end of readyList
         scheduler->Run(nextThread);
+            //printf("Nextthread:%s\n",nextThread->getName());
     }
     (void) interrupt->SetLevel(oldLevel);
  }
@@ -264,7 +271,7 @@ Thread::Sleep ()
     ASSERT(interrupt->getLevel() == IntOff);
     
     DEBUG('t', "Sleeping thread \"%s\"\n", getName());
-
+    printf("Thread %s go to sleep\n",currentThread->name);
     //printf("Thread %s changes status from %s to BLOCKED\n",name,getStatus());
     status = BLOCKED;
     scheduler->getBlockedList()->Append((void *) this);
@@ -369,6 +376,15 @@ Thread::RestoreUserState()
 	machine->WriteRegister(i, userRegisters[i]);
 }
 
+bool 
+Thread::SetUserRegister(int regId, int val){
+    if (regId >= 0 && regId < NumTotalRegs){
+        userRegisters[regId] = val;
+        return TRUE;
+    }
+    return FALSE;
+}
+
 void
 Thread::InitUserReg()
 {
@@ -453,4 +469,43 @@ void
 Thread::performTick()
 {
     interrupt->OneTick();
+}
+
+#include<map>
+using namespace std;
+map<int, List*> joinThreadTable;
+Lock* JoinTableLock = new Lock("JoinLock");
+
+void
+Thread::addToJoinTable(int tid){
+    JoinTableLock->Acquire();
+    map<int, List*>::iterator iter;
+    iter = joinThreadTable.find(tid);
+    if (iter == joinThreadTable.end()){
+        List* lst = new List;
+        lst->Append((void *)this);
+        joinThreadTable.insert(pair<int, List*>(tid, lst));
+    } else {
+        List *lst = iter->second;
+        lst->Append((void *)this);
+    }
+    JoinTableLock->Release();
+}
+
+void 
+Thread::awakeJoinThreads(int tid){
+    JoinTableLock->Acquire();
+    map<int, List*>::iterator iter;
+    iter = joinThreadTable.find(tid);
+    if (iter != joinThreadTable.end()){
+        List* lst = iter->second;
+        Thread* thread;
+        while ((thread = (Thread *)lst->Remove())!= NULL){
+                printf("name: %s\n",thread->name);
+                scheduler->ReadyToRun(thread);
+            }
+            //printf("Thread %s is activated\n",thread->name);
+            joinThreadTable.erase(tid);
+    }
+    JoinTableLock->Release();
 }

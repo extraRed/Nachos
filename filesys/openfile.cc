@@ -76,6 +76,7 @@ int
 OpenFile::Read(char *into, int numBytes)
 {
    hdr->setAccessTime(stats->totalTicks);
+   //int result = ReadAt(into, numBytes, seekPosition, TRUE);
    int result = ReadAt(into, numBytes, seekPosition);
    seekPosition += result;
    hdr->WriteBack(headSector);
@@ -86,6 +87,7 @@ int
 OpenFile::Write(char *into, int numBytes)
 {
    hdr->setModifyTime(stats->totalTicks);
+   //int result = WriteAt(into, numBytes, seekPosition, TRUE);
    int result = WriteAt(into, numBytes, seekPosition);
    seekPosition += result;
    hdr->WriteBack(headSector);
@@ -119,7 +121,7 @@ OpenFile::Write(char *into, int numBytes)
 //----------------------------------------------------------------------
 
 int
-OpenFile::ReadAt(char *into, int numBytes, int position)
+OpenFile::ReadAt(char *into, int numBytes, int position, bool ifCache)
 {
     int fileLength = hdr->FileLength();
     int i, firstSector, lastSector, numSectors;
@@ -137,10 +139,18 @@ OpenFile::ReadAt(char *into, int numBytes, int position)
 
     // read in all the full and partial sectors that we need
     buf = new char[numSectors * SectorSize];
-    for (i = firstSector; i <= lastSector; i++)	
-        synchDisk->ReadSector(hdr->ByteToSector(i * SectorSize), 
-					&buf[(i - firstSector) * SectorSize]);
 
+    //Access synchDisk, need lock!
+    //fileManager->LockReadFile(headSector);
+    for (i = firstSector; i <= lastSector; i++){
+        if(ifCache==FALSE)
+            synchDisk->ReadSector(hdr->ByteToSector(i * SectorSize), 
+					&buf[(i - firstSector) * SectorSize]);
+	else
+            fileCache->CacheReadSector(hdr->ByteToSector(i * SectorSize), 
+					&buf[(i - firstSector) * SectorSize]);
+    }
+    //fileManager->ReleaseReadFile(headSector);
     // copy the part we want
     bcopy(&buf[position - (firstSector * SectorSize)], into, numBytes);
     delete [] buf;
@@ -148,7 +158,7 @@ OpenFile::ReadAt(char *into, int numBytes, int position)
 }
 
 int
-OpenFile::WriteAt(char *from, int numBytes, int position)
+OpenFile::WriteAt(char *from, int numBytes, int position, bool ifCache)
 {
     int fileLength = hdr->FileLength();
     int i, firstSector, lastSector, numSectors;
@@ -193,9 +203,17 @@ OpenFile::WriteAt(char *from, int numBytes, int position)
     bcopy(from, &buf[position - (firstSector * SectorSize)], numBytes);
 
 // write modified sectors back
-    for (i = firstSector; i <= lastSector; i++)	
-        synchDisk->WriteSector(hdr->ByteToSector(i * SectorSize), 
+    //Access synchDisk, need lock!
+    //fileManager->LockWriteFile(headSector);
+    for (i = firstSector; i <= lastSector; i++){	
+        if(ifCache==FALSE)
+            synchDisk->WriteSector(hdr->ByteToSector(i * SectorSize), 
 					&buf[(i - firstSector) * SectorSize]);
+        else
+	    fileCache->CacheWriteSector(hdr->ByteToSector(i * SectorSize), 
+					&buf[(i - firstSector) * SectorSize]);
+    }
+    //fileManager->ReleaseWriteFile(headSector);
     delete [] buf;
     return numBytes;
 }

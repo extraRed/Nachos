@@ -8,7 +8,7 @@
  */
 
 #include "syscall.h"
-#define N 256
+#define N 16
 int A[N];	/* size of physical memory; with code, we'll run out of space!*/
 
 int
@@ -31,8 +31,9 @@ main()
        //for (k = 0;k < N; k++)
          //   Print(A[k]);
     }
-    for (i = 0; i < N; i++)
-        if(A[i]!=i+1)
-            Exit(-1);
+    for (i = 0; i < N; i++){
+        Print(A[i],0);
+        Print("\n",2);
+    }
     Exit(A[0]-1);		/* and then we're done -- should be 0! */
 }

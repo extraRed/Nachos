@@ -52,6 +52,11 @@ extern FileSystem  *fileSystem;
 #ifdef FILESYS
 #include "synchdisk.h"
 extern SynchDisk   *synchDisk;
+//by LMX
+#include "fileManager.h"
+extern FileManager *fileManager;
+#include "fileCache.h"
+extern FileCache *fileCache;
 #endif
 
 #ifdef NETWORK

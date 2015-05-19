@@ -39,6 +39,7 @@
 
 #include "copyright.h"
 #include "utility.h"
+#include "list.h"
 
 #ifdef USER_PROGRAM
 #include "machine.h"
@@ -56,7 +57,6 @@
 // Size of the thread's private execution stack.
 // WATCH OUT IF THIS ISN'T BIG ENOUGH!!!!!
 #define StackSize	(4 * 1024)	// in words
-
 
 // Thread state
 enum ThreadStatus { JUST_CREATED, RUNNING, READY, BLOCKED, READY_SUSPEND, BLOCKED_SUSPEND };
@@ -115,6 +115,8 @@ class Thread {
     int getTimeSlice(){return timeSlice;}
     void setTimeSlice(int slice){timeSlice=slice;}
     void performTick();
+    void addToJoinTable(int tid);
+    void awakeJoinThreads(int tid);
     
   private:
     // some of the private data for this class is listed above
@@ -130,6 +132,9 @@ class Thread {
     int TID;	    //Thread Id
     int priority;   
     int timeSlice;
+
+    //static map<int, List&> joinThreadTable; //the map to main the joined thread
+    //The threads in List wait for the thread with tid to finish
     
     void StackAllocate(VoidFunctionPtr func, int arg);
     					// Allocate a stack for thread.
@@ -147,6 +152,7 @@ class Thread {
     void RestoreUserState();		// restore user-level register state
     //by LMX
     void InitUserReg();
+    bool SetUserRegister(int regId, int val);
 
     AddrSpace *space;			// User code this thread is running.
     void Suspend();

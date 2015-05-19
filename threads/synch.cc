@@ -134,7 +134,7 @@ void
 Lock::Release() 
 {
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
-    ASSERT(isHeldByCurrentThread());                           // the lock must be held by the current thread
+    //ASSERT(isHeldByCurrentThread());                           // the lock must be held by the current thread
     lock->V();
     owner=NULL;
     (void) interrupt->SetLevel(oldLevel);                       // re-enable interrupts
@@ -224,7 +224,7 @@ Barrier::Wait()
 Read_Write_Lock::Read_Write_Lock(char* debugName)
 {
     name=debugName;
-    mutex=new Lock("mutex");
+    mutex=new Lock("rd_lock");
     writing=new Lock(name);
     reader=0;
 }
@@ -238,7 +238,7 @@ Read_Write_Lock::Read_Acquire()
 {
     mutex->Acquire();
     reader++;
-    printf("%s arrived, %d readers now\n",currentThread->getName(),reader);
+    //printf("%s arrived, %d readers now\n",currentThread->getName(),reader);
     if(reader==1){
         writing->Acquire();
     }
@@ -249,7 +249,7 @@ Read_Write_Lock::Read_Release()
 {
     mutex->Acquire();
     reader--;
-    printf("%s left, %d readers now\n",currentThread->getName(),reader);
+    //printf("%s left, %d readers now\n",currentThread->getName(),reader);
     if(reader==0){
         writing->Release();
     }
@@ -258,12 +258,12 @@ Read_Write_Lock::Read_Release()
 void
 Read_Write_Lock::Write_Acquire()
 {
-    printf("%s arrived\n",currentThread->getName());
+    //printf("%s arrived, has a writer\n",currentThread->getName());
     writing->Acquire();
 }
 void
 Read_Write_Lock::Write_Release()
 {
-    printf("%s left\n",currentThread->getName());
+    //printf("%s left, no writer\n",currentThread->getName());
     writing->Release();
 }

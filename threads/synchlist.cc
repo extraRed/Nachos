@@ -51,10 +51,10 @@ SynchList::~SynchList()
 //----------------------------------------------------------------------
 
 void
-SynchList::Append(void *item)
+SynchList::Append(void *item, int sortKey)
 {
     lock->Acquire();		// enforce mutual exclusive access to the list 
-    list->Append(item);
+    list->Append(item, sortKey);
     listEmpty->Signal(lock);	// wake up a waiter, if any
     lock->Release();
 }
@@ -76,6 +76,20 @@ SynchList::Remove()
     while (list->IsEmpty())
 	listEmpty->Wait(lock);		// wait until list isn't empty
     item = list->Remove();
+    ASSERT(item != NULL);
+    lock->Release();
+    return item;
+}
+
+void*
+SynchList::RemoveByKey(int sortKey)
+{
+
+    void *item;
+    lock->Acquire();			// enforce mutual exclusion
+    while (list->IsEmpty())
+	listEmpty->Wait(lock);		// wait until list isn't empty
+    item = list->RemoveByKey(sortKey);
     ASSERT(item != NULL);
     lock->Release();
     return item;

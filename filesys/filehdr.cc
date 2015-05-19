@@ -129,6 +129,7 @@ FileHeader::Deallocate(BitMap *freeMap)
 void
 FileHeader::FetchFrom(int sector)
 {
+    //fileCache->CacheReadSector(sector, (char *)this);
     synchDisk->ReadSector(sector, (char *)this);
 }
 
@@ -142,6 +143,7 @@ FileHeader::FetchFrom(int sector)
 void
 FileHeader::WriteBack(int sector)
 {
+    //fileCache->CacheWriteSector(sector, (char *)this);
     synchDisk->WriteSector(sector, (char *)this); 
 }
 
@@ -205,7 +207,7 @@ FileHeader::Print()
         for (i = 0; i < numSectors; i++)
 	    printf("%d ", dataSectors[i]);
         printf("\n");
-        return ;
+        leftSectors=0;
     }else{
         printf("Direct indexes:\n");
         for (i = 0; i < NumDirect; i++)
@@ -225,8 +227,9 @@ FileHeader::Print()
         }
         printf("\n");
     }
-    /*
-    int i, j, k;
+
+    
+    int j, k;
     char *data = new char[SectorSize];
     printf("\nFile contents:\n");
     for (i = k = 0; i < numSectors; i++) {
@@ -240,7 +243,7 @@ FileHeader::Print()
         printf("\n"); 
     }
     delete [] data;
-    */
+    
 }
 
 //by LMX

@@ -74,16 +74,16 @@ List::~List()
 //----------------------------------------------------------------------
 
 void
-List::Append(void *item)
+List::Append(void *item, int sortKey)
 {
-    ListElement *element = new ListElement(item, 0);
+    ListElement *element = new ListElement(item, sortKey);
 
     if (IsEmpty()) {		// list is empty
 	first = element;
 	last = element;
     } else {			// else put it after last
-	last->next = element;
-	last = element;
+        last->next = element;
+        last = element;
     }
 }
 
@@ -100,9 +100,9 @@ List::Append(void *item)
 //----------------------------------------------------------------------
 
 void
-List::Prepend(void *item)
+List::Prepend(void *item, int sortKey)
 {
-    ListElement *element = new ListElement(item, 0);
+    ListElement *element = new ListElement(item, sortKey);
 
     if (IsEmpty()) {		// list is empty
 	first = element;
@@ -236,3 +236,28 @@ List::SortedRemove(int *keyPtr)
     return thing;
 }
 
+void*
+List::RemoveByKey(int key)
+{
+    ListElement *ptr, *temp;		
+ 
+    if (IsEmpty()) {	
+        return NULL;
+    } else if(first->key==key){
+        temp=first;
+        first=first->next;
+        return temp->item;      
+    }else{		
+        for (ptr = first; ptr->next != NULL; ptr = ptr->next) {
+            if (ptr->next->key==key) {
+                if(ptr->next==last)
+                    last = ptr; 
+                temp = ptr ->next;
+		   ptr ->next = temp ->next;
+                 
+		   return temp ->item;
+            }
+        }
+    }
+    return NULL;
+}

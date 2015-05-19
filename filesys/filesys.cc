@@ -487,6 +487,7 @@ FileSystem::Open(char *name)
 bool
 FileSystem::Remove(char *name, char *path)
 { 
+    printf("Thread %s is trying to remove file %s\n",currentThread->getName(),name);
     Directory *directory;
     BitMap *freeMap;
     FileHeader *fileHdr;
@@ -509,6 +510,11 @@ FileSystem::Remove(char *name, char *path)
     if (sector == -1) {
        delete directory;
        return FALSE;			 // file not found 
+    }
+    if (fileManager->NumThread(sector)>0){
+        delete directory;
+        printf("This file is also viewed by other %d threads! Can't remove!\n", fileManager->NumThread(sector));
+        return FALSE;
     }
     fileHdr = new FileHeader;
     fileHdr->FetchFrom(sector);
@@ -628,3 +634,19 @@ FileSystem::Print()
     delete freeMap;
     delete directory;
 } 
+
+//----------------------------------------------------------------------
+// FileSystem::Copy
+//    Copy the file src to file dst
+//----------------------------------------------------------------------
+bool 
+FileSystem::Copy(char * src, char* dst, int size){
+    OpenFile * srcOpenFile = Open(src);
+    OpenFile * dstOpenFile = Open(dst);
+    char * buffer = new char[size];
+    srcOpenFile->Read(buffer, size);
+    dstOpenFile->Write(buffer, size);
+    delete buffer;
+    delete srcOpenFile;
+    delete dstOpenFile;
+}

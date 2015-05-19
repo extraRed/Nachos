@@ -58,7 +58,7 @@ PageManager::loadPage(int address)
      int phynum, entryid;
      int vpn = address/ PageSize;
 
-     printf("PageFault from virtual page %d!\n", vpn);
+     //printf("PageFault from virtual page %d!\n", vpn);
     
      // find a clean page in the memory for the program     
      int availPage=currentThread->space->getAvailPageNum();
@@ -66,7 +66,8 @@ PageManager::loadPage(int address)
      if(availPage==0 || numClean()==0) {
          //entryid= getSwapPageFIFO();  
          entryid = getSwapPageLRU();  
-         ASSERT(entryid != -1 && machine->pageTable[entryid].valid==TRUE);
+         ASSERT(entryid != -1 );
+         ASSERT(machine->pageTable[entryid].valid==TRUE);
          char *filename=currentThread->space->getFileName();
          phynum = swapPage(entryid,filename);
          ASSERT(phynum!=-1);
@@ -79,7 +80,7 @@ PageManager::loadPage(int address)
      markPage(phynum);     //set the page 
      //printf("virtual page: %d, physical page: %d\n", vpn, phynum); 
 
-     printf("Load virtual page %d to physical page %d from %s\n", vpn, phynum, filename);
+     //printf("Load virtual page %d to physical page %d from %s\n", vpn, phynum, filename);
      
      //open file and load the page
      OpenFile *executable = fileSystem -> Open(filename);
@@ -95,7 +96,7 @@ PageManager::loadPage(int address)
 
      machine->pageTable[vpn].comingTime=stats->totalTicks;
 
-     DumpState();
+     //DumpState();
      delete executable;
 }
 
@@ -108,7 +109,7 @@ PageManager::swapPage(int entryid, char *filename)
      vpn=machine->pageTable[entryid].virtualPage;
      phynum=machine->pageTable[entryid].physicalPage;
     
-     printf("Page %d will be swapped out!\n",phynum);
+     //printf("Page %d will be swapped out!\n",phynum);
 
      machine ->pageTable[entryid].valid = FALSE;
      
@@ -116,7 +117,7 @@ PageManager::swapPage(int entryid, char *filename)
      if(machine ->pageTable[entryid].dirty == TRUE)
      {
         
-        printf("Page %d is dirty, write back to %s\n",phynum, filename);
+        //printf("Page %d is dirty, write back to %s\n",phynum, filename);
         
          OpenFile *executable = fileSystem -> Open(filename);     
          executable ->WriteAt(&(machine ->mainMemory[phynum * PageSize]), PageSize, vpn * PageSize);

@@ -54,7 +54,7 @@ Copy(char *from, char *to)
 	fclose(fp);
 	return;
     }
-    
+
     openFile = fileSystem->Open(to);
     ASSERT(openFile != NULL);
     
@@ -87,9 +87,11 @@ Print(char *name)
     }
     
     buffer = new char[TransferSize];
-    while ((amountRead = openFile->Read(buffer, TransferSize)) > 0)
+    while ((amountRead = openFile->Read(buffer, TransferSize)) > 0){
 	for (i = 0; i < amountRead; i++)
 	    printf("%c", buffer[i]);
+        printf("\n");
+    }
     delete [] buffer;
 
     delete openFile;		// close the Nachos file
@@ -108,22 +110,26 @@ Print(char *name)
 //	  PerformanceTest -- overall control, and print out performance #'s
 //----------------------------------------------------------------------
 
-#define FileName 	"TestFileLMXLMXLMXLMXLMXLMX"
+#define FileName 	"TestFile"
 #define Contents 	"1234567890"
+#define NewContents "0987654321"
 #define ContentSize 	strlen(Contents)
-#define FileSize 	((int)(ContentSize * 1000))
+#define FileSize 	((int)(ContentSize * 100))
 
-static void 
-FileWrite()
+//static void 
+void
+FileWrite(int arg)
 {
     OpenFile *openFile;    
     int i, numBytes;
 
     printf("Sequential write of %d byte file, in %d byte chunks\n", 
 	FileSize, ContentSize);
-    if (!fileSystem->Create(FileName, 0)) {
+    if(arg==0){
+    if (!fileSystem->Create(FileName, FileSize)) {
       printf("Perf test: can't create %s\n", FileName);
       return;
+    }
     }
     openFile = fileSystem->Open(FileName);
     if (openFile == NULL) {
@@ -131,7 +137,10 @@ FileWrite()
 	return;
     }
     for (i = 0; i < FileSize; i += ContentSize) {
-        numBytes = openFile->Write(Contents, ContentSize);
+        if(arg==0)
+            numBytes = openFile->Write(Contents, ContentSize);
+        else
+            numBytes = openFile->Write(NewContents, ContentSize);
         //printf("NumB: %d\n",numBytes);
 	if (numBytes < 10) {
 	    printf("Perf test: unable to write %s\n", FileName);
@@ -142,8 +151,9 @@ FileWrite()
     delete openFile;	// close file
 }
 
-static void 
-FileRead()
+//static void 
+void
+FileRead(int arg)
 {
     OpenFile *openFile;    
     char *buffer = new char[ContentSize];
@@ -159,7 +169,8 @@ FileRead()
     }
     for (i = 0; i < FileSize; i += ContentSize) {
         numBytes = openFile->Read(buffer, ContentSize);
-	if ((numBytes < 10) || strncmp(buffer, Contents, ContentSize)) {
+        printf("content read: %s\n",buffer);
+	  if ((numBytes < 10) || strncmp(buffer, Contents, ContentSize)) {
 	    printf("Perf test: unable to read %s\n", FileName);
 	    delete openFile;
 	    delete [] buffer;
@@ -171,20 +182,8 @@ FileRead()
 }
 
 void
-PerformanceTest()
+TestMutiDir()
 {
-    printf("Starting file system performance test:\n");
-    /*
-    stats->Print();
-    FileWrite();
-    FileRead();
-    fileSystem->Print();
-    if (!fileSystem->Remove(FileName)) {
-      printf("Perf test: unable to remove %s\n", FileName);
-      return;
-    }
-    stats->Print();
-    */
     fileSystem->CreateDirectory("LMX");
     fileSystem->CreateDirectory("OS", "/LMX");
     fileSystem->CreateDirectory("Nachos", "/LMX/OS");
@@ -193,5 +192,56 @@ PerformanceTest()
     fileSystem->Print();
     fileSystem->RemoveDirectory("OS", "/LMX");
     fileSystem->Print();
+}
+
+void openAndclose(int arg)
+{
+    OpenFile *openFile;    
+    if ((openFile = fileSystem->Open(FileName)) == NULL) {
+	printf("Perf test: unable to open file %s\n", FileName);
+	return;
+    }
+    printf("file %s opened by %s\n",FileName,currentThread->getName());
+    if(arg==2){
+        //currentThread->Yield();
+
+        delete openFile;
+        if (!fileSystem->Remove(FileName)) {
+            printf("Perf test: unable to remove %s\n", FileName);
+        }else{
+            printf("Perf test: %s is removed by thread %\n", FileName, currentThread->getName());
+        }
+    }
+     
+}
+
+void 
+TestMutiThread()
+{
+    Thread *t1=new Thread("reader1");
+    Thread *t2=new Thread("writer1");
+    //Thread *t3=new Thread("writer2");
+    t1->Fork(FileRead,0);
+    t2->Fork(FileWrite,1);
+    //t3->Fork(Writer,2);
+}
+
+void
+PerformanceTest()
+{
+    printf("Starting file system performance test:\n");
+    //fileSystem->Print();
+    //stats->Print();
+    FileWrite(0);
+    FileRead(0);
+    //fileSystem->Print();
+    if (!fileSystem->Remove(FileName)) {
+      printf("Perf test: unable to remove %s\n", FileName);
+      return;
+    }
+    //stats->Print();
+    
+    //TestMutiDir();
+    //TestMutiThread();
 }
 
